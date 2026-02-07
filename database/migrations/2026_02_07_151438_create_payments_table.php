@@ -11,8 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::createWithManageBy('payments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('order_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
+            $table->enum('payment_method', ['cash', 'cashless']);
+            $table->decimal('amount');
+            $table->enum('status', ['pending', 'success', 'failed', 'expired']);
+            $table->decimal('cash_received')->default(0);
+            $table->string('xendit_invoice_id')->nullable();
+            $table->string('xendit_external_id')->nullable();
+            $table->string('xendit_payment_channel')->nullable();
+            $table->text('xendit_payment_url')->nullable();
+            $table->json('xendit_callback_data')->nullable();
+            $table->timestamp('paid_at')->nullable();
             $table->timestamps();
         });
     }

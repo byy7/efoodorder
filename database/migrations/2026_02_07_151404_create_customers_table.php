@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::createWithManageBy('customers', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('email')->unique()->nullable();
+            $table->string('phone_number')->nullable();
             $table->timestamps();
         });
     }

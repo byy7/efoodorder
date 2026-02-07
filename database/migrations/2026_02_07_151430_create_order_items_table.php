@@ -11,8 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_items', function (Blueprint $table) {
+        Schema::createWithManageBy('order_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('order_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
+            $table->foreignId('product_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
+            $table->smallInteger('quantity');
+            $table->decimal('subtotal');
             $table->timestamps();
         });
     }
