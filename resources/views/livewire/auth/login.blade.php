@@ -1,59 +1,100 @@
 <x-layouts::auth>
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
-
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
-
-        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-6">
-            @csrf
-
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                :value="old('email')"
-                type="email"
-                required
-                autofocus
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
-
-            <!-- Password -->
-            <div class="relative">
-                <flux:input
-                    name="password"
-                    :label="__('Password')"
-                    type="password"
-                    required
-                    autocomplete="current-password"
-                    :placeholder="__('Password')"
-                    viewable
-                />
-
-                @if (Route::has('password.request'))
-                    <flux:link class="absolute top-0 text-sm end-0" :href="route('password.request')" wire:navigate>
-                        {{ __('Forgot your password?') }}
-                    </flux:link>
-                @endif
+    <div class="auth-basic-wrapper d-flex align-items-center justify-content-center">
+        <div class="container-fluid my-5 my-lg-0">
+            <div class="row">
+                <div class="col-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mx-auto">
+                    <div class="card rounded-4 mb-0 border-4 border-primary border-gradient-1">
+                        <div class="card-body p-5">
+                            <div class="text-center">
+                                <img src="{{ asset('assets/img/login-logo.png') }}" class="mb-4" width="100"
+                                     alt="Login Logo"/>
+                            </div>
+                            <h4 class="fw-bold">Login</h4>
+                            <p class="mb-0">Masukkan akun anda</p>
+                            <div class="form-body my-4">
+                                <form id="loginForm" class="row g-3" method="post" action="{{ route('login.store') }}">
+                                    @csrf
+                                    <div class="col-12">
+                                        <label for="inputEmailAddress" class="form-label">Email</label>
+                                        <input type="email" name="email" value="{{ old('email') }}" class="form-control"
+                                               id="inputEmailAddress"
+                                               placeholder="Masukkan Email" required/>
+                                        <div class="invalid-feedback">TEsting</div>
+                                        @error('email')
+                                        <div class="alert alert-border-danger alert-dismissible fade show mt-2 mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <div class="font-35 text-danger"><span
+                                                        class="material-icons-outlined fs-2">report_gmailerrorred</span>
+                                                </div>
+                                                <div class="ms-3">
+                                                    <h6 class="mb-0 text-danger">Error</h6>
+                                                    <div class="">{{ $message }}</div>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="inputChoosePassword" class="form-label">Password</label>
+                                        <div class="input-group" id="show_hide_password">
+                                            <input type="password" name="password" class="form-control border-end-0"
+                                                   id="inputChoosePassword" required/>
+                                            <a href="javascript:0;" class="input-group-text bg-transparent"><i
+                                                    class="bi bi-eye-slash-fill"></i></a>
+                                            @error('password')
+                                            <div
+                                                class="alert alert-border-danger alert-dismissible fade show mt-2 mb-2">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="font-35 text-danger"><span
+                                                            class="material-icons-outlined fs-2">report_gmailerrorred</span>
+                                                    </div>
+                                                    <div class="ms-3">
+                                                        <h6 class="mb-0 text-danger">Error</h6>
+                                                        <div class="">{{ $message }}</div>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                        aria-label="Close"></button>
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-grid">
+                                            <button id="submitBtn" class="btn btn-primary" type="submit">Login</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <!-- Remember Me -->
-            <flux:checkbox name="remember" :label="__('Remember me')" :checked="old('remember')" />
-
-            <div class="flex items-center justify-end">
-                <flux:button variant="primary" type="submit" class="w-full" data-test="login-button">
-                    {{ __('Log in') }}
-                </flux:button>
-            </div>
-        </form>
-
-        @if (Route::has('register'))
-            <div class="space-x-1 text-sm text-center rtl:space-x-reverse text-zinc-600 dark:text-zinc-400">
-                <span>{{ __('Don\'t have an account?') }}</span>
-                <flux:link :href="route('register')" wire:navigate>{{ __('Sign up') }}</flux:link>
-            </div>
-        @endif
+        </div>
     </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#show_hide_password a").on("click", function (event) {
+                event.preventDefault();
+                if ($("#show_hide_password input").attr("type") == "text") {
+                    $("#show_hide_password input").attr("type", "password");
+                    $("#show_hide_password i").addClass("bi-eye-slash-fill");
+                    $("#show_hide_password i").removeClass("bi-eye-fill");
+                } else if ($("#show_hide_password input").attr("type") == "password") {
+                    $("#show_hide_password input").attr("type", "text");
+                    $("#show_hide_password i").removeClass("bi-eye-slash-fill");
+                    $("#show_hide_password i").addClass("bi-eye-fill");
+                }
+            });
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function () {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+        });
+    </script>
 </x-layouts::auth>

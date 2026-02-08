@@ -1,3 +1,10 @@
-<x-layouts::auth.simple :title="$title ?? null">
-    {{ $slot }}
-</x-layouts::auth.simple>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    @include('partials.head')
+</head>
+<body>
+{{ $slot }}
+@include('partials.foot')
+</body>
+</html>
