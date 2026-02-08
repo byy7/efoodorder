@@ -24,7 +24,7 @@
                                         <div class="alert alert-border-danger alert-dismissible fade show mt-2 mb-2">
                                             <div class="d-flex align-items-center">
                                                 <div class="font-35 text-danger"><span
-                                                        class="material-icons-outlined fs-2">report_gmailerrorred</span>
+                                                        class="material-icons-outlined fs-2"></span>
                                                 </div>
                                                 <div class="ms-3">
                                                     <h6 class="mb-0 text-danger">Error</h6>
@@ -40,7 +40,7 @@
                                         <label for="inputChoosePassword" class="form-label">Password</label>
                                         <div class="input-group" id="show_hide_password">
                                             <input type="password" name="password" class="form-control border-end-0"
-                                                   id="inputChoosePassword" required/>
+                                                   id="inputChoosePassword" placeholder="Masukkan Password" required/>
                                             <a href="javascript:0;" class="input-group-text bg-transparent"><i
                                                     class="bi bi-eye-slash-fill"></i></a>
                                             @error('password')
@@ -48,7 +48,7 @@
                                                 class="alert alert-border-danger alert-dismissible fade show mt-2 mb-2">
                                                 <div class="d-flex align-items-center">
                                                     <div class="font-35 text-danger"><span
-                                                            class="material-icons-outlined fs-2">report_gmailerrorred</span>
+                                                            class="material-icons-outlined fs-2"></span>
                                                     </div>
                                                     <div class="ms-3">
                                                         <h6 class="mb-0 text-danger">Error</h6>

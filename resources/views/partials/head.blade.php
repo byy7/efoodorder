@@ -28,10 +28,7 @@
 <!--main css-->
 <link href="{{ asset('assets/template/vertical-menu/assets/css/bootstrap-extended.css') }}" rel="stylesheet">
 <link href="{{ asset('assets/template/vertical-menu/sass/main.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/template/vertical-menu/sass/dark-theme.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/template/vertical-menu/sass/blue-theme.css') }}" rel="stylesheet">
 <link href="{{ asset('assets/template/vertical-menu/sass/semi-dark.css') }}" rel="stylesheet">
-<link href="{{ asset('assets/template/vertical-menu/sass/bordered-theme.css') }}" rel="stylesheet">
 <link href="{{ asset('assets/template/vertical-menu/sass/responsive.css') }}" rel="stylesheet">
 
 <script src="{{ asset('assets/template/vertical-menu/assets/js/jquery.min.js') }}"></script>

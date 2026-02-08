@@ -9,6 +9,4 @@
 <script src="{{ asset('assets/template/vertical-menu/assets/plugins/notifications/js/lobibox.min.js') }}"></script>
 <script
     src="{{ asset('assets/template/vertical-menu/assets/plugins/notifications/js/notifications.min.js') }}"></script>
-<script
-    src="{{ asset('assets/template/vertical-menu/assets/plugins/notifications/js/notification-custom-script.js') }}"></script>
 <script src="{{ asset('assets/template/vertical-menu/assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
