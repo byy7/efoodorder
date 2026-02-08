@@ -25,5 +25,17 @@
 <!--end footer-->
 
 @include('partials.foot')
+
+{{-- Logout --}}
+<form id="logoutForm" method="POST" action="{{ route('logout') }}">
+    @csrf
+</form>
+
+<script>
+    $(document).on('click', '#logoutBtn', function (e) {
+        e.preventDefault();
+        $("#logoutForm").submit();
+    });
+</script>
 </body>
 </html>

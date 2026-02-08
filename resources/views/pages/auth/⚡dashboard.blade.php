@@ -511,8 +511,8 @@ new class extends Component {
                 </div>
             </div>
         </div>
-    </div><!--end row-->
-
+    </div>
+    <!--end row-->
 
     <div class="row">
         <div class="col-12 col-xxl-6 d-flex">

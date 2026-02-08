@@ -6,9 +6,9 @@ $(function () {
 
   /* scrollar */
 
-  new PerfectScrollbar(".notify-list")
-
-  new PerfectScrollbar(".search-content")
+  // new PerfectScrollbar(".notify-list")
+  //
+  // new PerfectScrollbar(".search-content")
 
   // new PerfectScrollbar(".mega-menu-widgets")
 
@@ -78,7 +78,7 @@ $(function () {
     $(".compose-mail-popup").show()
   }), $(".compose-mail-close").on("click", function() {
     $(".compose-mail-popup").hide()
-  }), 
+  }),
 
 
   /* chat */
