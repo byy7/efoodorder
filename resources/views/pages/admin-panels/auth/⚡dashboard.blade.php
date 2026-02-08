@@ -37,8 +37,8 @@ new class extends Component {
                 <div class="card-body">
                     <div class="mb-3 d-flex align-items-center justify-content-between">
                         <div
-                            class="wh-42 d-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 text-primary">
-                            <span class="material-icons-outlined fs-5">shopping_cart</span>
+                            class="wh-42 d-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-10 text-warning">
+                            <span class="material-icons-outlined fs-5">edit</span>
                         </div>
                     </div>
                     <div>
@@ -53,8 +53,8 @@ new class extends Component {
                 <div class="card-body">
                     <div class="mb-3 d-flex align-items-center justify-content-between">
                         <div
-                            class="wh-42 d-flex align-items-center justify-content-center rounded-circle bg-warning bg-opacity-10 text-warning">
-                            <span class="material-icons-outlined fs-5">leaderboard</span>
+                            class="wh-42 d-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10 text-success">
+                            <span class="material-icons-outlined fs-5">check</span>
                         </div>
                     </div>
                     <div>
@@ -69,8 +69,8 @@ new class extends Component {
                 <div class="card-body">
                     <div class="mb-3 d-flex align-items-center justify-content-between">
                         <div
-                            class="wh-42 d-flex align-items-center justify-content-center rounded-circle bg-info bg-opacity-10 text-info">
-                            <span class="material-icons-outlined fs-5">visibility</span>
+                            class="wh-42 d-flex align-items-center justify-content-center rounded-circle bg-red bg-opacity-10 text-white">
+                            <span class="material-icons-outlined fs-5">block</span>
                         </div>
                     </div>
                     <div>
@@ -85,7 +85,7 @@ new class extends Component {
                 <div class="card-body">
                     <div class="mb-3 d-flex align-items-center justify-content-between">
                         <div
-                            class="wh-42 d-flex align-items-center justify-content-center rounded-circle bg-success bg-opacity-10 text-success">
+                            class="wh-42 d-flex align-items-center justify-content-center rounded-circle bg-primary bg-opacity-10 text-primary">
                             <span class="material-icons-outlined fs-5">attach_money</span>
                         </div>
                     </div>

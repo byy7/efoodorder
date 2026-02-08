@@ -48,8 +48,8 @@
                     <div class="menu-title">Produk</div>
                 </a>
             </li>
-            <li {{ request()->routeIs('dashboard') ?? 'mm-active' }}>
-                <a href="#" wire:navigate>
+            <li {{ request()->routeIs('users') ?? 'mm-active' }}>
+                <a href="{{ route('users') }}" wire:navigate>
                     <div class="parent-icon"><i class="material-icons-outlined">person</i>
                     </div>
                     <div class="menu-title">Pengguna</div>
