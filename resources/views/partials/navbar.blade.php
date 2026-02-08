@@ -7,7 +7,7 @@
         </div>
         <ul class="navbar-nav gap-1 nav-right-links align-items-center">
             <li class="nav-item dropdown">
-                <a href="javascrpt:;" class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
+                <a href="javascript:;" class="dropdown-toggle dropdown-toggle-nocaret" data-bs-toggle="dropdown">
                     <img src="{{ asset('assets/img/user.webp') }}" class="rounded-circle p-1 border" width="45"
                          height="45"
                          alt="user">
@@ -25,7 +25,6 @@
                     <hr class="dropdown-divider">
                     <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
                             class="material-icons-outlined"></i>Profile</a>
-                    <hr class="dropdown-divider">
                     <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;" id="logoutBtn"><i
                             class="material-icons-outlined"></i>Logout</a>
                 </div>

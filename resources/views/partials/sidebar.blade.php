@@ -1,10 +1,10 @@
 <aside class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
         <div class="logo-icon">
-            <img src="assets/images/logo-icon.png" class="logo-img" alt="">
+            <img src="{{ asset('assets/img/logo.webp') }}" class="logo-img" alt="logo">
         </div>
         <div class="logo-name flex-grow-1">
-            <h5 class="mb-0">Maxton</h5>
+            <h5 class="mb-0">E FOOD</h5>
         </div>
         <div class="sidebar-close">
             <span class="material-icons-outlined">close</span>
