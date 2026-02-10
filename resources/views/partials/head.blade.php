@@ -17,6 +17,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/template/vertical-menu/assets/plugins/metismenu/metisMenu.min.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/template/vertical-menu/assets/plugins/metismenu/mm-vertical.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/template/vertical-menu/assets/plugins/simplebar/css/simplebar.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/template/vertical-menu/assets/plugins/notifications/css/lobibox.min.css') }}">
 
 <!--bootstrap css-->
 <link href="{{ asset('assets/template/vertical-menu/assets/css/bootstrap.min.css') }}" rel="stylesheet">
