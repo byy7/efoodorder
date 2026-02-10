@@ -25,45 +25,7 @@
 <!--end footer-->
 
 @include('partials.foot')
-
-{{-- Logout --}}
-<form id="logoutForm" method="POST" action="{{ route('logout') }}">
-    @csrf
-</form>
-
-<script>
-    $(document).on('click', '#logoutBtn', function (e) {
-        e.preventDefault();
-        $("#logoutForm").submit();
-    });
-
-    window.addEventListener('show-notification', (event) => {
-        const type = event.detail[0].type || 'success';
-        const message = event.detail[0].message || 'Operation completed successfully!';
-
-        Lobibox.notify(type, {
-            pauseDelayOnHover: true,
-            size: 'mini',
-            rounded: true,
-            icon: getNotificationIcon(type),
-            delayIndicator: false,
-            continueDelayOnInactiveTab: false,
-            position: 'top right',
-            msg: message
-        });
-    });
-
-    function getNotificationIcon(type) {
-        const icons = {
-            'success': 'bi bi-check2-circle',
-            'error': 'bi bi-x-circle',
-            'warning': 'bi bi-exclamation-triangle',
-            'info': 'bi bi-info-circle'
-        };
-        return icons[type] || 'bi bi-check2-circle';
-    }
-
-</script>
+@include('partials.custom-script')
 
 </body>
 </html>

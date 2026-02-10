@@ -13,17 +13,21 @@ new class extends Component {
 
     public string $search = '';
 
-    #[On('user-deleted')]
-    public function refresh(): void
+    #[On('alert-notification')]
+    public function alert(string $type, string $message): void
     {
-        $this->notifySuccess('User berhasil dihapus!');
+        switch ($type) {
+            case 'success':
+                $this->notifySuccess($message);
+                break;
+            case 'warning':
+                $this->notifyWarning($message);
+                break;
+            case 'error':
+                $this->notifyError($message);
+        }
     }
 
-    #[On('user-restriction')]
-    public function restrict(): void
-    {
-        $this->notifyWarning('User tidak dapat dihapus!');
-    }
 
     public function updatingSearch(): void
     {

@@ -61,7 +61,7 @@ class UserForm extends Form
         User::create($validated);
     }
 
-    public function update()
+    public function update(): void
     {
         $validated = $this->validate([
             'name' => 'required|string',
