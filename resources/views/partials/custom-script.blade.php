@@ -42,21 +42,28 @@
 
     window.addEventListener('show-modal', (event) => {
         let mode = event.detail.mode;
+        let modalId = '';
 
         if (mode === 'create' || mode === 'edit') {
-            modal = new bootstrap.Modal(
-                document.getElementById('formModal')
-            );
+            modalId = 'formModal';
         } else if (mode === 'delete') {
-            modal = new bootstrap.Modal(
-                document.getElementById('deleteModal')
-            );
+            modalId = 'deleteModal';
         }
+
+        modal = new bootstrap.Modal(
+            document.getElementById(modalId)
+        );
 
         modal.show();
     });
 
     window.addEventListener('hide-modal', () => {
         modal?.hide();
+    });
+
+    document.addEventListener('livewire:navigated', () => {
+        document.querySelectorAll('.dropdown-toggle').forEach(el => {
+            bootstrap.Dropdown.getOrCreateInstance(el);
+        });
     });
 </script>

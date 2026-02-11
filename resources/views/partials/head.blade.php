@@ -30,4 +30,4 @@
 <link href="{{ asset('assets/template/vertical-menu/sass/semi-dark.css') }}" rel="stylesheet">
 <link href="{{ asset('assets/template/vertical-menu/sass/responsive.css') }}" rel="stylesheet">
 
-<script src="{{ asset('assets/template/vertical-menu/assets/js/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/template/vertical-menu/assets/js/jquery.min.js') }}" data-navigate-once></script>

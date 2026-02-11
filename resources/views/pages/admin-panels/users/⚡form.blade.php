@@ -64,13 +64,13 @@ new class extends Component {
                         <label for="name" class="form-label">Nama <span class="text-danger">*</span></label>
                         <input wire:model="form.name" type="text" class="form-control" id="name"
                                placeholder="Masukkan Nama" required>
-                        @error('name')<span class="text-danger">{{ $message }}</span>@enderror
+                        @error('form.name')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                     <div class="col-md-12 mb-2">
                         <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
                         <input wire:model="form.email" type="email" class="form-control" id="email"
                                placeholder="Masukkan Email" required>
-                        @error('email')<span class="text-danger">{{ $message }}</span>@enderror
+                        @error('form.email')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                     @if($this->form->mode === 'create')
                         <div class="col-md-12 mb-2">
@@ -79,7 +79,7 @@ new class extends Component {
                                    placeholder="Masukkan Password"
                                    required>
                             <span class="text-muted">Password wajib min. 8 karakter</span>
-                            @error('password')<span class="text-danger">{{ $message }}</span>@enderror
+                            @error('form.password')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                         <div class="col-md-12 mb-2">
                             <label for="password_confirmation" class="form-label">Konfirmasi Password <span
@@ -88,7 +88,7 @@ new class extends Component {
                                    id="password_confirmation"
                                    placeholder="Konfirmasi Password"
                                    required>
-                            @error('password_confirmation')<span class="text-danger">{{ $message }}</span>@enderror
+                            @error('form.password_confirmation')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                     @endif
                 </div>

@@ -22,28 +22,28 @@
             </li>
             <li {{ request()->routeIs('dashboard') ?? 'mm-active' }}>
                 <a href="#" wire:navigate>
-                    <div class="parent-icon"><i class="material-icons-outlined">shopping_bag</i>
+                    <div class="parent-icon"><i class="material-icons-outlined">shop</i>
                     </div>
                     <div class="menu-title">Pesanan</div>
                 </a>
             </li>
             <li {{ request()->routeIs('dashboard') ?? 'mm-active' }}>
                 <a href="#" wire:navigate>
-                    <div class="parent-icon"><i class="material-icons-outlined">join_right</i>
+                    <div class="parent-icon"><i class="material-icons-outlined">group</i>
                     </div>
                     <div class="menu-title">Pelanggan</div>
                 </a>
             </li>
-            <li {{ request()->routeIs('dashboard') ?? 'mm-active' }}>
-                <a href="#" wire:navigate>
-                    <div class="parent-icon"><i class="material-icons-outlined">sports_football</i>
+            <li {{ request()->routeIs('categories') ?? 'mm-active' }}>
+                <a href="{{ route('categories') }}" wire:navigate>
+                    <div class="parent-icon"><i class="material-icons-outlined">category</i>
                     </div>
                     <div class="menu-title">Kategori</div>
                 </a>
             </li>
             <li {{ request()->routeIs('dashboard') ?? 'mm-active' }}>
                 <a href="#" wire:navigate>
-                    <div class="parent-icon"><i class="material-icons-outlined">fitbit</i>
+                    <div class="parent-icon"><i class="material-icons-outlined">inventory_2</i>
                     </div>
                     <div class="menu-title">Produk</div>
                 </a>

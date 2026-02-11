@@ -88,7 +88,7 @@ new class extends Component {
             </div>
         </div>
     </div>
-    @island(defer:true, name:'user-list', always:true)
+    @island(defer:true,always:true)
     @placeholder
     <div class="mt-3 mb-3 text-center">
         <button class="btn btn-dark" type="button" disabled><span class="spinner-grow spinner-grow-sm" role="status"
@@ -121,10 +121,12 @@ new class extends Component {
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-sm btn-filter dropdown-toggle dropdown-toggle-nocaret"
-                                            type="button" data-bs-toggle="dropdown">
+                                            type="button"
+                                            data-bs-toggle="dropdown"
+                                            aria-expanded="false">
                                         <i class="bi bi-three-dots"></i>
                                     </button>
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu dropdown-menu-end">
                                         <li><a class="dropdown-item text-warning" href="javascript:"
                                                wire:click="edit({{ $value->id }})"><i
                                                     class="bi bi-pencil me-2"></i>Edit</a></li>
@@ -150,20 +152,3 @@ new class extends Component {
     <livewire:pages::admin-panels.users.form/>
     @endisland
 </div>
-
-<script>
-    document.querySelectorAll('.dropdown-toggle').forEach(dropdown => {
-        new bootstrap.Dropdown(dropdown, {
-            boundary: 'window',
-            popperConfig: {
-                strategy: 'fixed',
-                modifiers: [{
-                    name: 'preventOverflow',
-                    options: {
-                        boundary: 'clippingParents'
-                    }
-                }]
-            }
-        });
-    });
-</script>
