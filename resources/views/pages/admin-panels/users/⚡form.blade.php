@@ -82,7 +82,8 @@ new class extends Component {
                             @error('password')<span class="text-danger">{{ $message }}</span>@enderror
                         </div>
                         <div class="col-md-12 mb-2">
-                            <label for="password_confirmation" class="form-label">Konfirmasi Password <span class="text-danger">*</span></label>
+                            <label for="password_confirmation" class="form-label">Konfirmasi Password <span
+                                    class="text-danger">*</span></label>
                             <input wire:model="form.password_confirmation" type="password" class="form-control"
                                    id="password_confirmation"
                                    placeholder="Konfirmasi Password"

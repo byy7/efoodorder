@@ -88,7 +88,16 @@ new class extends Component {
             </div>
         </div>
     </div>
+    @island(defer:true, name:'user-list', always:true)
+    @placeholder
+    <div class="mt-3 mb-3 text-center">
+        <button class="btn btn-dark" type="button" disabled><span class="spinner-grow spinner-grow-sm" role="status"
+                                                                  aria-hidden="true"></span>
+            Loading...
+        </button>
+    </div>
 
+    @endplaceholder
     <div class="card mt-4">
         <div class="card-body">
             <div class="table-responsive white-space-nowrap">
@@ -137,9 +146,9 @@ new class extends Component {
             {{ $this->users->links() }}
         </div>
     </div>
-
     {{-- Modal Form --}}
     <livewire:pages::admin-panels.users.form/>
+    @endisland
 </div>
 
 <script>
