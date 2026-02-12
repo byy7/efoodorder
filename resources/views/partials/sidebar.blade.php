@@ -41,8 +41,8 @@
                     <div class="menu-title">Kategori</div>
                 </a>
             </li>
-            <li {{ request()->routeIs('dashboard') ?? 'mm-active' }}>
-                <a href="#" wire:navigate>
+            <li {{ request()->routeIs('products') ?? 'mm-active' }}>
+                <a href="{{ route('products') }}" wire:navigate>
                     <div class="parent-icon"><i class="material-icons-outlined">inventory_2</i>
                     </div>
                     <div class="menu-title">Produk</div>
