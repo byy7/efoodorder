@@ -97,14 +97,13 @@ new class extends Component {
             </div>
         </div>
 
-        <div class="col-12 col-md-6 col-lg-3">
+        <div wire:ignore class="col-12 col-md-6 col-lg-3">
             <label for="select-active" class="form-label mb-2">Status</label>
-            <select
-                wire:model.live="is_active"
-                id="select-active"
-                class="form-select"
-                aria-label="Filter berdasarkan status">
-                <option value="">Semua Status</option>
+            <select wire:model="is_active"
+                    id="statusCategory"
+                    class="form-select"
+                    aria-label="Filter berdasarkan status" data-placeholder="Pilih Status">
+                <option value=""></option>
                 <option value="1">Aktif</option>
                 <option value="0">Tidak Aktif</option>
             </select>
@@ -190,3 +189,19 @@ new class extends Component {
     <livewire:pages::admin-panels.categories.form/>
     @endisland
 </div>
+
+{{-- Select 2 --}}
+<script>
+    $(document).ready(function () {
+        $('#statusCategory').select2({
+            theme: "bootstrap-5",
+            width: '100%',
+            placeholder: $(this).data('placeholder'),
+            allowClear: true
+        });
+        $('#statusCategory').on('change', function () {
+            var data = $('#statusCategory').select2("val");
+            $wire.$set('is_active', data);
+        });
+    });
+</script>

@@ -10,3 +10,4 @@
 <script
     src="{{ asset('assets/template/vertical-menu/assets/plugins/notifications/js/notifications.min.js') }}" data-navigate-once></script>
 <script src="{{ asset('assets/template/vertical-menu/assets/plugins/simplebar/js/simplebar.min.js') }}" data-navigate-once></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
