@@ -70,13 +70,12 @@ new class extends Component {
                         @error('form.description')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                     <div class="col-md-12 mb-2">
-                        <label for="select-active">Status Kategori <span class="text-danger">*</span></label>
-                        <select wire:model="form.is_active" id="select-active" class="form-select"
-                                data-placeholder="Pilih Status" required>
-                            <option value="" selected disabled>Pilih Status</option>
-                            <option value="1">Aktif</option>
-                            <option value="0">Tidak Aktif</option>
-                        </select>
+                        <div class="form-check form-switch form-check-success">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckSuccess"
+                                   wire:model="form.is_active">
+                            <label class="form-check-label" for="flexSwitchCheckSuccess">Status Kategori (Aktif/Tidak
+                                Aktif)</label>
+                        </div>
                         @error('form.is_active')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                 </div>

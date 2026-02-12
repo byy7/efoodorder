@@ -75,19 +75,22 @@ new class extends Component {
     {{-- END BREADCRUMB --}}
 
     <div class="row g-3">
-        <div class="col-lg-12 col-xl-12">
+        <div class="col-auto">
+            <div class="position-relative">
+                <input class="form-control px-5" type="search" wire:model.live.debounce.300ms="search"
+                       placeholder="Cari...">
+                <span
+                    class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
+            </div>
+        </div>
+        <div class="col-auto">
             <div class="d-flex align-items-center gap-2 justify-content-lg-between justify-content-xl-between">
                 <button class="btn btn-primary px-4" wire:click="create"><i class="bi bi-plus-lg me-2"></i>Tambah Data
                 </button>
-                <div class="position-relative">
-                    <input class="form-control px-5" type="search" wire:model.live.debounce.300ms="search"
-                           placeholder="Cari...">
-                    <span
-                        class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
-                </div>
             </div>
         </div>
     </div>
+
     @island(defer:true,always:true)
     @placeholder
     <div class="mt-3 mb-3 text-center">

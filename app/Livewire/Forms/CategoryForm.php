@@ -19,7 +19,7 @@ class CategoryForm extends Form
     public ?string $description = null;
 
     #[Validate('required|boolean')]
-    public string $is_active = '';
+    public bool $is_active = false;
 
     public function setData($mode, $id): void
     {

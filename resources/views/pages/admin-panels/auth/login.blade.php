@@ -1,15 +1,11 @@
 <x-layouts::auth>
     <div class="auth-basic-wrapper d-flex align-items-center justify-content-center">
-        <div class="container-fluid my-5 my-lg-0">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mx-auto">
-                    <div class="card rounded-4 mb-0 border-4 border-primary border-gradient-1">
+                    <div class="card rounded-4 border-4 border-primary border-gradient-1">
                         <div class="card-body p-5">
-                            <div class="text-center">
-                                <img src="{{ asset('assets/img/login-logo.png') }}" class="mb-4" width="100"
-                                     alt="Login Logo"/>
-                            </div>
-                            <h4 class="fw-bold">Login</h4>
+                            <h4 class="fw-bold">Login Admin</h4>
                             <p class="mb-0">Masukkan akun anda</p>
                             <div class="form-body my-4">
                                 <form id="loginForm" class="row g-3" method="post" action="{{ route('login.store') }}">

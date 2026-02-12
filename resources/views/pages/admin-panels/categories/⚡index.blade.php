@@ -80,30 +80,49 @@ new class extends Component {
     <x-breadcrumb :heading="__('Kategori')" :sub-heading="__('Daftar Kategori')"></x-breadcrumb>
     {{-- END BREADCRUMB --}}
 
-    <div class="row g-3">
-        <div class="col-lg-12 col-xl-12">
-            <div class="d-flex align-items-center gap-2 justify-content-lg-between justify-content-xl-between">
-                <button class="btn btn-primary px-4" wire:click="create"><i class="bi bi-plus-lg me-2"></i>Tambah Data
-                </button>
-                <div class="position-relative">
-                    <input class="form-control px-5" type="search" wire:model.live.debounce.300ms="search"
-                           placeholder="Cari...">
-                    <span
-                        class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5">search</span>
-                </div>
+    <div class="row g-3 align-items-end">
+        <div class="col-12 col-md-6 col-lg-4">
+            <label for="search-input" class="form-label mb-2">Cari Kategori</label>
+            <div class="position-relative">
+                <input
+                    id="search-input"
+                    class="form-control ps-5 pe-3"
+                    type="search"
+                    wire:model.live.debounce.300ms="search"
+                    placeholder="Cari..."
+                    aria-label="Cari kategori">
+                <span
+                    class="material-icons-outlined position-absolute ms-3 translate-middle-y start-0 top-50 fs-5 text-muted"
+                    aria-hidden="true">search</span>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="mt-2 mb-2">
-                <label for="select-active">Status Kategori</label>
-                <select wire:model.live="is_active" id="select-active" class="form-select">
-                    <option value="" selected>Semua</option>
-                    <option value="1">Aktif</option>
-                    <option value="0">Tidak Aktif</option>
-                </select>
-            </div>
+
+        <div class="col-12 col-md-6 col-lg-3">
+            <label for="select-active" class="form-label mb-2">Status</label>
+            <select
+                wire:model.live="is_active"
+                id="select-active"
+                class="form-select"
+                aria-label="Filter berdasarkan status">
+                <option value="">Semua Status</option>
+                <option value="1">Aktif</option>
+                <option value="0">Tidak Aktif</option>
+            </select>
+        </div>
+
+        <div class="col-lg-auto flex-grow-1 d-none d-lg-block"></div>
+
+        <div class="col-12 col-lg-auto">
+            <button
+                class="btn btn-primary w-100 w-lg-auto px-4"
+                wire:click="create"
+                aria-label="Tambah kategori baru">
+                <i class="bi bi-plus-lg me-2" aria-hidden="true"></i>
+                Tambah Kategori
+            </button>
         </div>
     </div>
+
     @island(defer:true, always:true)
     @placeholder
     <div class="mt-3 mb-3 text-center">
