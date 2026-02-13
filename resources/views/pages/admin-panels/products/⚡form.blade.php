@@ -27,7 +27,7 @@ new class extends Component {
     #[Computed]
     public function categories()
     {
-        return Category::orderBy('name')->get(['id', 'name']);
+        return Category::orderBy('name')->where('is_active', true)->get(['id', 'name']);
     }
 
     public function save(): void

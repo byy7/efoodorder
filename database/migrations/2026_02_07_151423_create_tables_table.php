@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::createWithManageBy('tables', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('status', ['available', 'occupied'])->default('available');
+            $table->boolean('status');
             $table->timestamps();
         });
     }

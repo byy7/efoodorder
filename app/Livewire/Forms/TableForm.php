@@ -2,13 +2,13 @@
 
 namespace App\Livewire\Forms;
 
-use App\Models\Category;
+use App\Models\Table;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class CategoryForm extends Form
+class TableForm extends Form
 {
-    public ?Category $category;
+    public ?Table $table;
 
     public string $mode = '';
 
@@ -17,11 +17,8 @@ class CategoryForm extends Form
     #[Validate('required|string')]
     public string $name = '';
 
-    #[Validate('nullable|string')]
-    public ?string $description = null;
-
     #[Validate('required|boolean')]
-    public bool $is_active = false;
+    public bool $status = false;
 
     public function setData($mode, $id): void
     {
@@ -32,15 +29,14 @@ class CategoryForm extends Form
         }
 
         if ($mode === 'edit' && $id) {
-            $this->category = Category::find(decrypt($id));
-            $this->name = $this->category->name;
-            $this->description = $this->category->description;
-            $this->is_active = $this->category->is_active;
+            $this->table = Table::find(decrypt($id));
+            $this->name = $this->table->name;
+            $this->status = $this->table->status;
         } elseif ($mode === 'delete' && $id) {
-            $this->category = Category::find(decrypt($id));
+            $this->table = Table::find(decrypt($id));
         } else {
-            $this->category = new Category;
-            $this->reset(['name', 'description', 'is_active']);
+            $this->table = new Table;
+            $this->reset(['name',  'status']);
         }
     }
 
@@ -56,18 +52,18 @@ class CategoryForm extends Form
     public function store(): void
     {
         $validated = $this->validate();
-        $this->category->create($validated);
+        $this->table->create($validated);
     }
 
     public function update(): void
     {
         $validated = $this->validate();
-        $this->category->update($validated);
+        $this->table->update($validated);
     }
 
     public function delete(): void
     {
-        $this->category->delete();
+        $this->table->delete();
         $this->reset();
     }
 }
