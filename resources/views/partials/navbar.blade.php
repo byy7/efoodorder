@@ -23,8 +23,8 @@
                         </div>
                     </a>
                     <hr class="dropdown-divider">
-                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i
-                            class="material-icons-outlined"></i>Profile</a>
+{{--                    <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;"><i--}}
+{{--                            class="material-icons-outlined"></i>Profile</a>--}}
                     <a class="dropdown-item d-flex align-items-center gap-2 py-2" href="javascript:;" id="logoutBtn"><i
                             class="material-icons-outlined"></i>Logout</a>
                 </div>

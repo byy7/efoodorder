@@ -62,13 +62,13 @@
                     <div class="menu-title">Laporan</div>
                 </a>
             </li>
-            <li {{ request()->routeIs('dashboard') ?? 'mm-active' }}>
-                <a href="#" wire:navigate>
-                    <div class="parent-icon"><i class="material-icons-outlined">support</i>
-                    </div>
-                    <div class="menu-title">Panduan Pengguna</div>
-                </a>
-            </li>
+{{--            <li {{ request()->routeIs('dashboard') ?? 'mm-active' }}>--}}
+{{--                <a href="#" wire:navigate>--}}
+{{--                    <div class="parent-icon"><i class="material-icons-outlined">support</i>--}}
+{{--                    </div>--}}
+{{--                    <div class="menu-title">Panduan Pengguna</div>--}}
+{{--                </a>--}}
+{{--            </li>--}}
         </ul>
     </div>
 </aside>

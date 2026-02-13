@@ -10,6 +10,8 @@ class UserForm extends Form
 {
     use PasswordValidationRules;
 
+    public ?User $user;
+
     public string $mode = '';
 
     public ?string $id = null;
@@ -31,10 +33,13 @@ class UserForm extends Form
         }
 
         if ($mode === 'edit' && $id) {
-            $user = User::find(decrypt($id));
-            $this->name = $user->name;
-            $this->email = $user->email;
+            $this->user = User::find(decrypt($id));
+            $this->name = $this->user->name;
+            $this->email = $this->user->email;
+        } elseif ($mode === 'delete' && $id) {
+            $this->user = User::find(decrypt($id));
         } else {
+            $this->user = new User;
             $this->reset(['name', 'email', 'password', 'password_confirmation']);
         }
     }
@@ -58,7 +63,7 @@ class UserForm extends Form
 
         $validated['password'] = bcrypt($validated['password']);
 
-        User::create($validated);
+        $this->user->create($validated);
     }
 
     public function update(): void
@@ -68,13 +73,12 @@ class UserForm extends Form
             'email' => 'required|email|unique:users,email,'.decrypt($this->id),
         ]);
 
-        $user = User::find(decrypt($this->id));
-        $user->update($validated);
+        $this->user->update($validated);
     }
 
     public function delete(): void
     {
-        User::destroy(decrypt($this->id));
+        $this->user->delete();
         $this->reset();
     }
 }

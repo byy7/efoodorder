@@ -79,13 +79,20 @@ new class extends Component {
                             <option value=""></option>
                             @foreach($this->categories as $value)
                                 <option
-                                    value="{{ encrypt($value->id) }}"
-                                @if(!is_null($form->category_id))
-                                    @selected($value->id == decrypt($form->category_id))
-                                    @endif>{{ $value->name }}</option>
+                                    value="{{ encrypt($value->id) }}">{{ $value->name }}</option>
                             @endforeach
                         </select>
                     </div>
+                    @if($form->mode == "edit")
+                        @if(!is_null($form->category_id))
+                            <small class="text-primary d-block mt-1">
+                                Kategori saat ini: {{ Category::find(decrypt($form->category_id))->name }}
+                            </small>
+                        @endif
+                        <small class="text-danger d-block mt-1">
+                            Kosongkan jika tidak ingin mengubah kategori
+                        </small>
+                    @endif
                     <div class="col-md-12 mb-2">
                         <label for="name" class="form-label">Nama <span class="text-danger">*</span></label>
                         <input wire:model="form.name" type="text" class="form-control" id="name"
@@ -97,7 +104,7 @@ new class extends Component {
                         <div class="input-group">
                             <span class="input-group-text">Rp</span>
                             <input wire:model="form.price" type="text" class="form-control number-separator" id="price"
-                                   placeholder="Masukkan Stok" required>
+                                   placeholder="Masukkan Harga" required>
                         </div>
                         @error('form.price')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
@@ -136,7 +143,6 @@ new class extends Component {
 
                             @if($form->mode == "edit")
                                 <small class="text-danger d-block mt-1">
-                                    <i class="bi bi-danger-circle me-1"></i>
                                     Kosongkan jika tidak ingin mengubah gambar
                                 </small>
                             @endif
@@ -159,10 +165,10 @@ new class extends Component {
                             </div>
 
                             {{-- Preview existing image in edit mode --}}
-                            @if($form->mode == "edit" && !empty($form->existing_image))
+                            @if($form->mode == "edit" && !empty($form->image))
                                 <div class="mt-2">
                                     <small class="text-muted d-block mb-1">Gambar saat ini:</small>
-                                    <img src="{{ $form->existing_image }}"
+                                    <img src="{{ Storage::url($form->image) }}"
                                          alt="Current product image"
                                          class="img-thumbnail"
                                          style="max-height: 100px;">
@@ -174,19 +180,17 @@ new class extends Component {
                             @enderror
                         </div>
                     </div>
-                    @if($form->stock == 0)
-                        <div class="col-md-12 mb-2">
-                            <div class="form-check form-switch form-check-success">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                       id="flexSwitchCheckSuccess"
-                                       wire:model="form.is_available">
-                                <label class="form-check-label" for="flexSwitchCheckSuccess">Status Tersedia
-                                    (Aktif/Tidak
-                                    Aktif)</label>
-                            </div>
-                            @error('form.is_available')<span class="text-danger">{{ $message }}</span>@enderror
+                    <div class="col-md-12 mb-2">
+                        <div class="form-check form-switch form-check-success">
+                            <input class="form-check-input" type="checkbox" role="switch"
+                                   id="flexSwitchCheckSuccess"
+                                   wire:model="form.is_available">
+                            <label class="form-check-label" for="flexSwitchCheckSuccess">Status Tersedia
+                                (Aktif/Tidak
+                                Aktif)</label>
                         </div>
-                    @endif
+                        @error('form.is_available')<span class="text-danger">{{ $message }}</span>@enderror
+                    </div>
                 </div>
             </div>
 
@@ -260,6 +264,10 @@ new class extends Component {
         $('#categorySelect').on('select2:select', function () {
             var data = $('#categorySelect').select2("val");
             $wire.$set('form.category_id', data);
+        });
+
+        Livewire.on('hide-modal', () => {
+            $('#categorySelect').val('').trigger('change');
         });
     });
 </script>

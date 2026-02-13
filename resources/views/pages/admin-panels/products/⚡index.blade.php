@@ -140,10 +140,11 @@ new class extends Component {
                     <thead class="table-light">
                     <tr>
                         <th>No</th>
-                        <th>kategori</th>
+                        <th>Kategori</th>
                         <th>Nama</th>
                         <th>Gambar</th>
                         <th>Harga</th>
+                        <th>Status</th>
                         <th>Stok</th>
                         <th>Aksi</th>
                     </tr>
@@ -153,12 +154,15 @@ new class extends Component {
                         <tr>
                             <td>{{ ($this->products->currentPage() - 1) * $this->products->perPage() + $key + 1}}</td>
                             <td>{{ $value->category?->name ?? "-" }}</td>
-                            <td>{{ $value->name }}</td>
+                            <td>{{ $value->name }}
+                                @if(!is_null($value->description))
+                                    <span class="separator text-muted fw-light">{{ Str::limit($value->description,30)  }}</span>
+                                @endif</td>
                             <td>@if(!is_null($value->image))
                                     <img src="{{ Storage::url($value->image) }}" class="img-fluid img-thumbnail"
                                          width="100" alt="{{ $value->name }}">
                                 @else
-                                    <p>Foto tidak tersedia.</p>
+                                    Foto tidak tersedia.
                                 @endif
                             </td>
                             <td>@currency($value->price)</td>
@@ -187,7 +191,7 @@ new class extends Component {
                         </tr>
                     @empty
                         <tr class="text-center">
-                            <td colspan="7"><h6>Data tidak tersedia</h6></td>
+                            <td colspan="8"><h6>Data tidak tersedia</h6></td>
                         </tr>
                     @endforelse
                     </tbody>

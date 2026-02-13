@@ -45,7 +45,7 @@ new class extends Component {
 };
 ?>
 
-<div wire:ignore.self>
+<div>
     {{-- CREATE/EDIT MODAL --}}
     <x-modal :modal-id="__('formModal')">
         <form wire:submit.prevent="save">

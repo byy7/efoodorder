@@ -8,6 +8,8 @@ use Livewire\Form;
 
 class CategoryForm extends Form
 {
+    public ?Category $category;
+
     public string $mode = '';
 
     public ?string $id = null;
@@ -34,7 +36,10 @@ class CategoryForm extends Form
             $this->name = $category->name;
             $this->description = $category->description;
             $this->is_active = $category->is_active;
+        } elseif ($mode === 'delete' && $id) {
+            $this->category = Category::find(decrypt($id));
         } else {
+            $this->category = new Category;
             $this->reset(['name', 'description', 'is_active']);
         }
     }
@@ -51,20 +56,18 @@ class CategoryForm extends Form
     public function store(): void
     {
         $validated = $this->validate();
-        Category::create($validated);
+        $this->category->create($validated);
     }
 
     public function update(): void
     {
         $validated = $this->validate();
-
-        $category = Category::find(decrypt($this->id));
-        $category->update($validated);
+        $this->category->update($validated);
     }
 
     public function delete(): void
     {
-        Category::destroy(decrypt($this->id));
+        $this->category->delete();
         $this->reset();
     }
 }

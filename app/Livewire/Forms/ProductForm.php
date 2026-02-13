@@ -9,6 +9,8 @@ use Livewire\Form;
 
 class ProductForm extends Form
 {
+    public ?Product $product;
+
     public string $mode = '';
 
     public ?string $id = null;
@@ -23,7 +25,7 @@ class ProductForm extends Form
     public ?string $description = null;
 
     #[Validate('required')]
-    public float $price = 0;
+    public ?string $price = null;
 
     #[Validate('nullable|image|max:2048')]
     public $image = null;
@@ -32,7 +34,7 @@ class ProductForm extends Form
     public bool $is_available = false;
 
     #[Validate('required')]
-    public int $stock = 0;
+    public ?int $stock = null;
 
     public function setData($mode, $id): void
     {
@@ -43,14 +45,18 @@ class ProductForm extends Form
         }
 
         if ($mode === 'edit' && $id) {
-            $product = Product::find(decrypt($id));
-            $this->category_id = Category::find($product->category_id)->id ?? null;
-            $this->name = $product->name;
-            $this->description = $product->description;
-            $this->is_available = $product->is_available;
-            $this->stock = $product->stock;
-            $this->price = $product->price;
+            $this->product = Product::find(decrypt($id));
+            $this->category_id = Category::find($this->product->category_id)->id ?? null;
+            ! is_null($this->category_id) ? $this->category_id = encrypt($this->category_id) : $this->category_id = null;
+            $this->name = $this->product->name;
+            $this->description = $this->product->description;
+            $this->is_available = $this->product->is_available;
+            $this->stock = $this->product->stock;
+            $this->price = intval($this->product->price);
+        } elseif ($mode === 'delete' && $id) {
+            $this->product = Product::find(decrypt($id));
         } else {
+            $this->product = new Product;
             $this->reset(['category_id', 'name', 'description', 'is_available', 'image', 'stock', 'price']);
         }
     }
@@ -68,37 +74,52 @@ class ProductForm extends Form
     {
         $validated = $this->validate();
         $validated['category_id'] = decrypt($this->category_id);
+        $validated['price'] = floatval(str_replace(',', '', $validated['price']));
 
         if (! is_null($this->image)) {
             $validated['image'] = $this->storeImage();
         }
 
-        dd($validated);
-
-        Category::create($validated);
+        $this->product->create($validated);
     }
 
     public function update(): void
     {
         $validated = $this->validate();
-        if (! is_null($this->image)) {
+        $validated['category_id'] = decrypt($this->category_id);
+        $validated['price'] = floatval(str_replace(',', '', $validated['price']));
+
+        if (! is_null($validated['image'])) {
+            if (! is_null($this->product->image)) {
+                $this->removeExistingImage($this->product->image);
+            }
             $validated['image'] = $this->storeImage();
+        } else {
+            unset($validated['image']);
         }
 
-        $category = Category::find(decrypt($this->id));
-        $category->update($validated);
+        $this->product->update($validated);
     }
 
     public function delete(): void
     {
-        Category::destroy(decrypt($this->id));
+        $this->removeExistingImage($this->product->image);
+        $this->product->delete();
         $this->reset();
     }
 
     private function storeImage()
     {
-        $fileName = 'products-'.time();
+        $fileName = 'products-'.time().'.'.$this->image->extension();
 
         return $this->image->storeAs(path: 'products', name: $fileName);
+    }
+
+    private function removeExistingImage($path): void
+    {
+        $imagePath = storage_path($path);
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        }
     }
 }
