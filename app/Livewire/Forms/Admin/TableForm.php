@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Livewire\Forms;
+namespace App\Livewire\Forms\Admin;
 
-use App\Models\Customer;
+use App\Models\Table;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class CustomerForm extends Form
+class TableForm extends Form
 {
-    public ?Customer $customer;
+    public ?Table $table;
 
     public string $mode = '';
 
@@ -17,11 +17,8 @@ class CustomerForm extends Form
     #[Validate('required|string')]
     public string $name = '';
 
-    #[Validate('nullable|email')]
-    public string $email = '';
-
-    #[Validate('nullable|string')]
-    public string $phone_number = '';
+    #[Validate('required|boolean')]
+    public bool $status = false;
 
     public function setData($mode, $id): void
     {
@@ -32,15 +29,14 @@ class CustomerForm extends Form
         }
 
         if ($mode === 'edit' && $id) {
-            $this->customer = Customer::find(decrypt($id));
-            $this->name = $this->customer->name;
-            $this->email = $this->customer->email;
-            $this->phone_number = $this->customer->phone_number;
+            $this->table = Table::find(decrypt($id));
+            $this->name = $this->table->name;
+            $this->status = $this->table->status;
         } elseif ($mode === 'delete' && $id) {
-            $this->customer = Customer::find(decrypt($id));
+            $this->table = Table::find(decrypt($id));
         } else {
-            $this->customer = new Customer;
-            $this->reset(['name', 'email', 'phone_number']);
+            $this->table = new Table;
+            $this->reset(['name',  'status']);
         }
     }
 
@@ -56,18 +52,18 @@ class CustomerForm extends Form
     public function store(): void
     {
         $validated = $this->validate();
-        $this->customer->create($validated);
+        $this->table->create($validated);
     }
 
     public function update(): void
     {
         $validated = $this->validate();
-        $this->customer->update($validated);
+        $this->table->update($validated);
     }
 
     public function delete(): void
     {
-        $this->customer->delete();
+        $this->table->delete();
         $this->reset();
     }
 }

@@ -1,9 +1,8 @@
 <?php
 
-use App\Concerns\WithNotifications;
-use Livewire\Component;
-use App\Livewire\Forms\UserForm;
+use App\Livewire\Forms\Admin\UserForm;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 new class extends Component {
     public UserForm $form;

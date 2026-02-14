@@ -7,3 +7,6 @@ Route::middleware('guest')->group(function () {
         return view('main');
     })->name('main');
 });
+
+Route::livewire('register-customers/{type}', 'pages::customer-panels.registration')
+    ->name('register_customers');

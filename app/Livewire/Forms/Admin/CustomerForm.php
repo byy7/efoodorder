@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Livewire\Forms;
+namespace App\Livewire\Forms\Admin;
 
-use App\Models\Category;
+use App\Models\Customer;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class CategoryForm extends Form
+class CustomerForm extends Form
 {
-    public ?Category $category;
+    public ?Customer $customer;
 
     public string $mode = '';
 
@@ -17,11 +17,11 @@ class CategoryForm extends Form
     #[Validate('required|string')]
     public string $name = '';
 
-    #[Validate('nullable|string')]
-    public ?string $description = null;
+    #[Validate('nullable|email')]
+    public string $email = '';
 
-    #[Validate('required|boolean')]
-    public bool $is_active = false;
+    #[Validate('nullable|string')]
+    public string $phone_number = '';
 
     public function setData($mode, $id): void
     {
@@ -32,15 +32,15 @@ class CategoryForm extends Form
         }
 
         if ($mode === 'edit' && $id) {
-            $this->category = Category::find(decrypt($id));
-            $this->name = $this->category->name;
-            $this->description = $this->category->description;
-            $this->is_active = $this->category->is_active;
+            $this->customer = Customer::find(decrypt($id));
+            $this->name = $this->customer->name;
+            $this->email = $this->customer->email;
+            $this->phone_number = $this->customer->phone_number;
         } elseif ($mode === 'delete' && $id) {
-            $this->category = Category::find(decrypt($id));
+            $this->customer = Customer::find(decrypt($id));
         } else {
-            $this->category = new Category;
-            $this->reset(['name', 'description', 'is_active']);
+            $this->customer = new Customer;
+            $this->reset(['name', 'email', 'phone_number']);
         }
     }
 
@@ -56,18 +56,18 @@ class CategoryForm extends Form
     public function store(): void
     {
         $validated = $this->validate();
-        $this->category->create($validated);
+        $this->customer->create($validated);
     }
 
     public function update(): void
     {
         $validated = $this->validate();
-        $this->category->update($validated);
+        $this->customer->update($validated);
     }
 
     public function delete(): void
     {
-        $this->category->delete();
+        $this->customer->delete();
         $this->reset();
     }
 }

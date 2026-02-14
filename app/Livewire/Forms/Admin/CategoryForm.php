@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Livewire\Forms;
+namespace App\Livewire\Forms\Admin;
 
-use App\Models\Table;
+use App\Models\Category;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class TableForm extends Form
+class CategoryForm extends Form
 {
-    public ?Table $table;
+    public ?Category $category;
 
     public string $mode = '';
 
@@ -17,8 +17,11 @@ class TableForm extends Form
     #[Validate('required|string')]
     public string $name = '';
 
+    #[Validate('nullable|string')]
+    public ?string $description = null;
+
     #[Validate('required|boolean')]
-    public bool $status = false;
+    public bool $is_active = false;
 
     public function setData($mode, $id): void
     {
@@ -29,14 +32,15 @@ class TableForm extends Form
         }
 
         if ($mode === 'edit' && $id) {
-            $this->table = Table::find(decrypt($id));
-            $this->name = $this->table->name;
-            $this->status = $this->table->status;
+            $this->category = Category::find(decrypt($id));
+            $this->name = $this->category->name;
+            $this->description = $this->category->description;
+            $this->is_active = $this->category->is_active;
         } elseif ($mode === 'delete' && $id) {
-            $this->table = Table::find(decrypt($id));
+            $this->category = Category::find(decrypt($id));
         } else {
-            $this->table = new Table;
-            $this->reset(['name',  'status']);
+            $this->category = new Category;
+            $this->reset(['name', 'description', 'is_active']);
         }
     }
 
@@ -52,18 +56,18 @@ class TableForm extends Form
     public function store(): void
     {
         $validated = $this->validate();
-        $this->table->create($validated);
+        $this->category->create($validated);
     }
 
     public function update(): void
     {
         $validated = $this->validate();
-        $this->table->update($validated);
+        $this->category->update($validated);
     }
 
     public function delete(): void
     {
-        $this->table->delete();
+        $this->category->delete();
         $this->reset();
     }
 }

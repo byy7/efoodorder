@@ -1,11 +1,8 @@
 <?php
 
-use App\Concerns\WithNotifications;
-use App\Livewire\Forms\CategoryForm;
-use App\Livewire\Forms\TableForm;
-use Livewire\Component;
-use App\Livewire\Forms\UserForm;
+use App\Livewire\Forms\Admin\TableForm;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 new class extends Component {
     public TableForm $form;
