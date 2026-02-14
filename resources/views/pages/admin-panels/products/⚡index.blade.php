@@ -119,7 +119,7 @@ new class extends Component {
                 wire:click="create"
                 aria-label="Tambah kategori baru">
                 <i class="bi bi-plus-lg me-2" aria-hidden="true"></i>
-                Tambah Produk
+                Tambah Data
             </button>
         </div>
     </div>
@@ -140,8 +140,8 @@ new class extends Component {
                     <thead class="table-light">
                     <tr>
                         <th>No</th>
-                        <th>Kategori</th>
                         <th>Nama</th>
+                        <th>Kategori</th>
                         <th>Gambar</th>
                         <th>Harga</th>
                         <th>Status</th>
@@ -153,11 +153,12 @@ new class extends Component {
                     @forelse($this->products as $key => $value)
                         <tr>
                             <td>{{ ($this->products->currentPage() - 1) * $this->products->perPage() + $key + 1}}</td>
-                            <td>{{ $value->category?->name ?? "-" }}</td>
-                            <td>{{ $value->name }}
+                            <td><span class="text-dark">{{ $value->name }}</span>
                                 @if(!is_null($value->description))
-                                    <span class="separator text-muted fw-light">{{ Str::limit($value->description,30)  }}</span>
+                                    <span
+                                        class="separator text-muted fw-light">{{ Str::limit($value->description,30)  }}</span>
                                 @endif</td>
+                            <td>{{ $value->category?->name ?? "-" }}</td>
                             <td>@if(!is_null($value->image))
                                     <img src="{{ Storage::url($value->image) }}" class="img-fluid img-thumbnail"
                                          width="100" alt="{{ $value->name }}">

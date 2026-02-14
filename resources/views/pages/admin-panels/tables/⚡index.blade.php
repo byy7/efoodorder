@@ -117,7 +117,7 @@ new class extends Component {
                 wire:click="create"
                 aria-label="Tambah meja baru">
                 <i class="bi bi-plus-lg me-2" aria-hidden="true"></i>
-                Tambah Meja
+                Tambah Data
             </button>
         </div>
     </div>
