@@ -3,10 +3,12 @@
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return view('main');
-    })->name('main');
-});
+    Route::livewire('/', 'pages::customer-panels.main')
+        ->name('home');
 
-Route::livewire('register-customers/{type}', 'pages::customer-panels.registration')
-    ->name('register_customers');
+    Route::livewire('customer-registrations/{type}', 'pages::customer-panels.registration')
+        ->name('registrations');
+
+    Route::livewire('customer-orders/{type}/{id}', 'pages::customer-panels.order')
+        ->name('customer_orders');
+});

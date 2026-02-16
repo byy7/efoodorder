@@ -30,7 +30,6 @@ new class extends Component {
         }
     }
 
-
     public function updatingSearch(): void
     {
         $this->resetPage();

@@ -14,19 +14,20 @@ class RegistrationForm extends Form
     public string $name = '';
 
     #[Validate('nullable|email')]
-    public string $email = '';
+    public ?string $email = null;
 
     #[Validate('nullable|string')]
-    public string $phone_number = '';
+    public ?string $phone_number = null;
 
     public function setData($customer): void
     {
         $this->customer = $customer;
     }
 
-    public function save(): void
+    public function save()
     {
         $validated = $this->validate();
-        $this->customer->create($validated);
+
+        return $this->customer->create($validated);
     }
 }
