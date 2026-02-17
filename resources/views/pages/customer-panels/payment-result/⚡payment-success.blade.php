@@ -60,6 +60,9 @@ class extends Component {
                 </p>
             @endif
 
+            <p class="text-white small">
+                Silahkan tutup halaman ini.
+            </p>
         </div>
     </div>
 </div>
