@@ -87,110 +87,123 @@ new class extends Component {
         </div>
     </div>
 
-    {{-- SUMMARY --}}
-    <div class="row">
-        <div class="col-12">
-            <h5 class="mb-3 fw-bold">RINGKASAN PESANAN</h5>
-        </div>
+    @island(defer:true, always:true)
+    @placeholder
+    <div class="mt-3 mb-3 text-center">
+        <button class="btn btn-dark" type="button" disabled><span class="spinner-grow spinner-grow-sm" role="status"
+                                                                  aria-hidden="true"></span>
+            Loading...
+        </button>
+    </div>
+    @endplaceholder
+    <div wire:poll.10s>
+        {{-- SUMMARY --}}
+        <div class="row">
+            <div class="col-12">
+                <h5 class="mb-3 fw-bold">RINGKASAN PESANAN</h5>
+            </div>
 
-        @foreach($this->orderData as $item)
-            <div class="col-12 col-lg-3 col-xxl-3 d-flex">
-                <div class="card rounded-4 w-100">
-                    <div class="card-body">
-                        <div class="mb-3 d-flex align-items-center justify-content-between">
-                            <div class="wh-42 d-flex align-items-center justify-content-center rounded-circle
+            @foreach($this->orderData as $item)
+                <div class="col-12 col-lg-3 col-xxl-3 d-flex">
+                    <div class="card rounded-4 w-100">
+                        <div class="card-body">
+                            <div class="mb-3 d-flex align-items-center justify-content-between">
+                                <div class="wh-42 d-flex align-items-center justify-content-center rounded-circle
                                         bg-{{ $item['color'] }} bg-opacity-10 text-{{ $item['color'] }}">
-                                <span class="material-icons-outlined fs-5">{{ $item['icon'] }}</span>
+                                    <span class="material-icons-outlined fs-5">{{ $item['icon'] }}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div>
-                            <p class="mb-1 text-muted">{{ $item['title'] }}</p>
-                            <h4 class="mb-0">
-                                @if(!empty($item['currency']))
-                                    @currency($item['count'])
-                                @else
-                                    {{ $item['count'] }}
-                                @endif
-                            </h4>
+                            <div>
+                                <p class="mb-1 text-muted">{{ $item['title'] }}</p>
+                                <h4 class="mb-0">
+                                    @if(!empty($item['currency']))
+                                        @currency($item['count'])
+                                    @else
+                                        {{ $item['count'] }}
+                                    @endif
+                                </h4>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        @endforeach
-    </div>
-    {{-- END SUMMARY --}}
-
-    {{-- LATEST ORDER --}}
-    <div class="row mt-4">
-        <div class="col-12 d-flex align-items-start gap-3">
-            <h5 class="mb-3 fw-bold">PESANAN TERBARU</h5>
+            @endforeach
         </div>
-        <div class="col-12 d-flex">
-            <div class="card rounded-4 w-100">
-                <div class="card-body">
-                    <a class="mb-3 btn btn-outline-info" href="{{ route('orders') }}" wire:navigate>Lihat Semua Pesanan</a>
-                    <div class="table-responsive">
-                        <table class="table align-middle mb-0 table-striped">
-                            <thead>
-                            <tr>
-                                <th>Waktu</th>
-                                <th>No. Pesanan</th>
-                                <th>Pelanggan</th>
-                                <th>Metode</th>
-                                <th>Status</th>
-                                <th>Total</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @forelse($this->latestOrders as $order)
-                                <tr wire:key="order-{{ $order->id }}">
-                                    <td>
-                                        <div>
-                                            <h6 class="mb-0">{{ $order->created_at->format('d M Y') }}</h6>
-                                            <p class="mb-0 text-muted small">{{ $order->created_at->format('H:i') }}</p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="fw-semibold">{{ $order->order_number }}</span>
-                                    </td>
-                                    <td>{{ $order->customer?->name ?? '-' }}</td>
-                                    <td>
+        {{-- END SUMMARY --}}
+
+        {{-- LATEST ORDER --}}
+        <div class="row mt-4">
+            <div class="col-12 d-flex align-items-start gap-3">
+                <h5 class="mb-3 fw-bold">PESANAN TERBARU</h5>
+            </div>
+            <div class="col-12 d-flex">
+                <div class="card rounded-4 w-100">
+                    <div class="card-body">
+                        <a class="mb-3 btn btn-outline-info" href="{{ route('orders') }}" wire:navigate>Lihat Semua
+                            Pesanan</a>
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0 table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Waktu</th>
+                                    <th>No. Pesanan</th>
+                                    <th>Pelanggan</th>
+                                    <th>Metode</th>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @forelse($this->latestOrders as $order)
+                                    <tr wire:key="order-{{ $order->id }}">
+                                        <td>
+                                            <div>
+                                                <h6 class="mb-0">{{ $order->created_at->format('d M Y') }}</h6>
+                                                <p class="mb-0 text-muted small">{{ $order->created_at->format('H:i') }}</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="fw-semibold">{{ $order->order_number }}</span>
+                                        </td>
+                                        <td>{{ $order->customer?->name ?? '-' }}</td>
+                                        <td>
                                             <span
                                                 class="badge {{ $order->payment_method === 'cash' ? 'bg-secondary' : 'bg-primary' }} bg-opacity-10 text-secondary text-capitalize">
                                                 {{ $order->payment_method === 'cash' ? 'Tunai' : 'Non-Tunai' }}
                                             </span>
-                                    </td>
-                                    <td>
-                                        @php
-                                            $statusMap = [
-                                                'pending'   => ['badge bg-warning',  'text-warning',  'Diproses'],
-                                                'confirmed' => ['badge bg-success',  'text-success',  'Selesai'],
-                                                'completed' => ['badge bg-success',  'text-success',  'Selesai'],
-                                                'cancelled' => ['badge bg-danger',   'text-danger',   'Dibatalkan'],
-                                            ];
-                                            [$bg, $text, $label] = $statusMap[$order->status] ?? ['bg-secondary', 'text-secondary', $order->status];
-                                        @endphp
-                                        <div class="card-lable {{ $bg }} {{ $text }} bg-opacity-10">
-                                            <p class="{{ $text }} mb-0">{{ $label }}</p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <h6 class="mb-0">@currency($order->amount)</h6>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center text-muted py-4">
-                                        Belum ada pesanan
-                                    </td>
-                                </tr>
-                            @endforelse
-                            </tbody>
-                        </table>
+                                        </td>
+                                        <td>
+                                            @php
+                                                $statusMap = [
+                                                    'pending'   => ['badge bg-warning',  'text-warning',  'Diproses'],
+                                                    'confirmed' => ['badge bg-success',  'text-success',  'Selesai'],
+                                                    'completed' => ['badge bg-success',  'text-success',  'Selesai'],
+                                                    'cancelled' => ['badge bg-danger',   'text-danger',   'Dibatalkan'],
+                                                ];
+                                                [$bg, $text, $label] = $statusMap[$order->status] ?? ['bg-secondary', 'text-secondary', $order->status];
+                                            @endphp
+                                            <div class="card-lable {{ $bg }} {{ $text }} bg-opacity-10">
+                                                <p class="{{ $text }} mb-0">{{ $label }}</p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <h6 class="mb-0">@currency($order->amount)</h6>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted py-4">
+                                            Belum ada pesanan
+                                        </td>
+                                    </tr>
+                                @endforelse
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        {{-- END LATEST ORDER --}}
     </div>
-    {{-- END LATEST ORDER --}}
+    @endisland
 </div>

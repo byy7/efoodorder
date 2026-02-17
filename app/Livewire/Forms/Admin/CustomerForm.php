@@ -18,10 +18,10 @@ class CustomerForm extends Form
     public string $name = '';
 
     #[Validate('nullable|email')]
-    public string $email = '';
+    public ?string $email = '';
 
     #[Validate('nullable|string')]
-    public string $phone_number = '';
+    public ?string $phone_number = '';
 
     public function setData($mode, $id): void
     {

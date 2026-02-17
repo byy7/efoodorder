@@ -9,6 +9,10 @@ class Payment extends Model
 {
     protected $guarded = [];
 
+    protected $casts = [
+        'paid_at' => 'datetime',
+    ];
+
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);

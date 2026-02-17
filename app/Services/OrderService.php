@@ -70,8 +70,8 @@ class OrderService
                     'payer_email' => $customer->email ?? 'customer@example.com',
                     'customer' => [
                         'given_names' => $customer->name,
-                        'email' => $customer->email,
-                        'mobile_number' => $customer->phone_number,
+                        'email' => $customer->email ?? 'user@mail.com',
+                        'mobile_number' => $customer->phone_number ?? '+628',
                     ],
                     'success_redirect_url' => route('customer.payment.success', encrypt($order->id)),
                     'failure_redirect_url' => route('customer.payment.failed', encrypt($order->id)),

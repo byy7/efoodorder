@@ -9,6 +9,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('users');
     Route::livewire('orders', 'pages::admin-panels.orders.index')
         ->name('orders');
+    Route::livewire('payment/cash/{orderId}', 'pages::admin-panels.orders.cash-payment')
+        ->name('customer.payment.cash');
     Route::livewire('customers', 'pages::admin-panels.customers.index')
         ->name('customers');
     Route::livewire('categories', 'pages::admin-panels.categories.index')

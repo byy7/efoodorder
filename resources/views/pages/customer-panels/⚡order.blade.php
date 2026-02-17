@@ -246,11 +246,10 @@ class extends Component {
             if ($this->paymentMethod === 'cashless') {
                 $this->redirect($order->payment->xendit_payment_url);
                 return;
+            }else{
+                // Cash → go to payment confirmation page
+                $this->redirectRoute('customer.payment.cash', encrypt($order->id));
             }
-
-            // Cash → go to payment confirmation page
-            $this->redirectRoute('customer.payment.cash', encrypt($order->id));
-
         } catch (\Throwable $e) {
             $this->notifyError('Gagal membuat pesanan: ' . $e->getMessage());
         }

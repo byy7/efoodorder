@@ -12,9 +12,6 @@ Route::livewire('customer-registrations/{type}', 'pages::customer-panels.registr
 Route::livewire('customer-orders/{type}/{customerId}', 'pages::customer-panels.order')
     ->name('customer_orders');
 
-Route::livewire('payment/cash/{orderId}', 'pages::customer-panels.cash-payment')
-    ->name('customer.payment.cash');
-
 Route::livewire('payment/success/{orderId}', 'pages::customer-panels.payment-result.payment-success')
     ->name('customer.payment.success');
 
