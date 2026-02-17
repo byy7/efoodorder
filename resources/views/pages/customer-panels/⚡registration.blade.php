@@ -16,7 +16,7 @@ class extends Component {
     {
         $this->type = $type;
 
-        if ($this->type == "dine-in") {
+        if ($this->type == "dine_in") {
             $checkTable = Table::where('status', true)->count();
             if ($checkTable == 0) {
                 session()->flash('error', 'Meja tidak tersedia/penuh!');

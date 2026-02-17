@@ -160,17 +160,6 @@ new class extends Component {
                                 <small class="text-muted">Mengupload gambar...</small>
                             </div>
 
-                            {{-- Preview existing image in edit mode --}}
-                            @if($form->mode == "edit" && !empty($form->image))
-                                <div class="mt-2">
-                                    <small class="text-muted d-block mb-1">Gambar saat ini:</small>
-                                    <img src="{{ Storage::url($form->image) }}"
-                                         alt="Current product image"
-                                         class="img-thumbnail"
-                                         style="max-height: 100px;">
-                                </div>
-                            @endif
-
                             @error('form.image')
                             <span class="text-danger d-block mt-1">{{ $message }}</span>
                             @enderror

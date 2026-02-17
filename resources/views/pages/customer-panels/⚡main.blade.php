@@ -37,13 +37,13 @@ class extends Component {
                 <div class="mt-2">
                     <div class="col-12 mb-4">
                         <div class="d-grid">
-                            <a href="{{ route('registrations', 'dine-in') }}" class="btn btn-grd btn-lg btn-grd-primary"
+                            <a href="{{ route('registrations', 'dine_in') }}" class="btn btn-grd btn-lg btn-grd-primary"
                                wire:navigate>DINE IN</a>
                         </div>
                     </div>
                     <div class="col-12 mb-4">
                         <div class="d-grid">
-                            <a href="{{ route('registrations', 'take-away') }}" class="btn btn-grd btn-lg btn-grd-info"
+                            <a href="{{ route('registrations', 'takeaway') }}" class="btn btn-grd btn-lg btn-grd-info"
                                wire:navigate>TAKE AWAY</a>
                         </div>
                     </div>

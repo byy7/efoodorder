@@ -24,6 +24,7 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->enum('type', ['dine_in', 'takeaway']);
             $table->decimal('amount');
+            $table->text('notes')->nullable();
             $table->enum('status', ['pending', 'confirmed', 'completed', 'cancelled']);
             $table->enum('payment_status', ['pending', 'completed', 'cancelled']);
             $table->enum('payment_method', ['cash', 'cashless']);

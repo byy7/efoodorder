@@ -163,7 +163,8 @@ new class extends Component {
                                     <img src="{{ Storage::url($value->image) }}" class="img-fluid img-thumbnail"
                                          width="100" alt="{{ $value->name }}">
                                 @else
-                                    Foto tidak tersedia.
+                                    <img src="{{ asset('assets/img/no-image.webp') }}" class="img-fluid img-thumbnail"
+                                         width="100" alt="{{ $value->name }}">
                                 @endif
                             </td>
                             <td>@currency($value->price)</td>

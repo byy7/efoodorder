@@ -22,6 +22,7 @@ return new class extends Migration
                 ->constrained()
                 ->nullOnDelete();
             $table->smallInteger('quantity');
+            $table->text('notes')->nullable();
             $table->decimal('subtotal');
             $table->timestamps();
         });
