@@ -19,6 +19,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('products');
     Route::livewire('tables', 'pages::admin-panels.tables.index')
         ->name('tables');
-    Route::livewire('reports', 'pages::admin-panels.reports.index')
+    Route::livewire('reports', 'pages::admin-panels.report')
         ->name('reports');
 });

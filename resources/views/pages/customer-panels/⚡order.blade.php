@@ -248,7 +248,7 @@ class extends Component {
                 return;
             }else{
                 // Cash → go to payment confirmation page
-                $this->redirectRoute('customer.payment.cash', encrypt($order->id));
+                $this->redirectRoute('cash.payment', encrypt($order->id));
             }
         } catch (\Throwable $e) {
             $this->notifyError('Gagal membuat pesanan: ' . $e->getMessage());

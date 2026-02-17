@@ -9,6 +9,11 @@ class OrderItem extends Model
 {
     protected $guarded = [];
 
+    public function setNotesAttribute($value): void
+    {
+        $this->attributes['notes'] = empty($value) ? null : $value;
+    }
+
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
