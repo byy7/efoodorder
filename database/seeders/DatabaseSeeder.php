@@ -11,11 +11,11 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        //        User::factory()->count(10)->create();
+        User::factory()->count(10)->create();
         Product::factory()->count(10)->create();
 
-        //        $this->call([
-        //            UserSeeder::class,
-        //        ]);
+        $this->call([
+            UserSeeder::class,
+        ]);
     }
 }
