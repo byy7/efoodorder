@@ -61,6 +61,12 @@ new class extends Component {
 
         return $query->latest()->paginate(10);
     }
+
+    public function show($id): void
+    {
+        $id = encrypt($id);
+        $this->dispatch('open-modal', mode: 'edit', id: $id);
+    }
 };
 ?>
 
@@ -154,7 +160,7 @@ new class extends Component {
                                 </div>
                             </td>
                             <td>
-                                <span class="fw-semibold">{{ $value->order_number }}</span>
+                                <span class="fw-semibold" wire:click="show({{ $value->id }})" style="cursor: pointer">{{ $value->order_number }}</span>
                             </td>
                             <td>{{ $value->customer?->name ?? '-' }}</td>
                             <td>
@@ -211,6 +217,8 @@ new class extends Component {
         </div>
     </div>
     @endisland
+    {{-- Modal Form --}}
+    <livewire:pages::admin-panels.orders.show/>
 </div>
 
 {{-- Select 2 --}}

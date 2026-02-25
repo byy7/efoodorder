@@ -55,7 +55,7 @@ class AppServiceProvider extends ServiceProvider
         );
 
         Blade::directive('currency', function ($expression) {
-            return "Rp. <?php echo number_format($expression,2,',','.'); ?>";
+            return "Rp.<?php echo number_format($expression,2,',','.'); ?>";
         });
     }
 
