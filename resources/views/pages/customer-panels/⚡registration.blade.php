@@ -11,6 +11,7 @@ new #[Layout('layouts.app-customer')]
 class extends Component {
     public RegistrationForm $form;
     public string $type = '';
+    public ?int $table_id = null;
 
     public function mount(string $type)
     {
@@ -32,10 +33,24 @@ class extends Component {
         try {
             $customer = $this->form->save();
             $this->dispatch('alert-notification', type: 'sukses', message: 'Data berhasil disimpan!');
-            $this->redirectRoute('customer_orders', [$this->type, encrypt($customer->id)]);
+
+            if ($this->type == "dine_in" && $this->table_id) {
+                $this->redirectRoute('customer_orders', [$this->type, encrypt($customer->id), $this->table_id]);
+            } else {
+                $this->redirectRoute('customer_orders', [$this->type, encrypt($customer->id)]);
+            }
+
+
         } catch (Exception $e) {
             $this->dispatch('alert-notification', type: 'error', message: $e->getMessage());
         }
+    }
+
+    #[Computed]
+    public function tables()
+    {
+        return Table::where('status', true)
+            ->get(['id', 'name']);
     }
 };
 ?>
@@ -50,6 +65,20 @@ class extends Component {
                 <p>Silahkan isi data dibawah terlebih dahulu</p>
                 <form class="mt-4" wire:submit.prevent="save">
                     <div class="row g-4">
+                        @if($this->type == "dine_in")
+                            <div class="col-12">
+                                <div class="position-relative">
+                                    <label for="table" class="form-label">Meja <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" id="table" wire:model="table_id">
+                                        <option value="">Pilih Meja</option>
+                                        @foreach($this->tables as $value)
+                                            <option value="{{ $value->id }}">{{ $value->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        @endif
                         <div class="col-12">
                             <div class="position-relative">
                                 <label for="name" class="form-label">Nama <span class="text-danger">*</span></label>

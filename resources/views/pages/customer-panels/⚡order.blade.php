@@ -4,6 +4,7 @@ use App\Concerns\WithNotifications;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\Table;
 use App\Services\OrderService;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -17,6 +18,7 @@ class extends Component {
     use WithNotifications;
 
     public ?Customer $customer = null;
+    public ?Table $table = null;
     public string $search = '';
     public string $type = '';
     public string $customerId = '';
@@ -26,11 +28,15 @@ class extends Component {
     public string $orderNotes = '';
     public string $paymentMethod = 'cash'; // 'cash' | 'cashless'
 
-    public function mount(string $type, string $customerId): void
+    public function mount(string $type, string $customerId, ?int $tableId = null): void
     {
         $this->type = $type;
         $this->customerId = decrypt($customerId);
         $this->customer = Customer::findOrFail($this->customerId);
+
+        if ($tableId) {
+            $this->table = Table::findOrFail($tableId);
+        }
 
         // Load cart from session, back-fill missing notes key
         $this->cart = collect(session()->get("cart.{$this->customerId}", []))
@@ -41,7 +47,7 @@ class extends Component {
     #[On('alert-notification')]
     public function alert(string $type, string $message): void
     {
-        match($type) {
+        match ($type) {
             'success' => $this->notifySuccess($message),
             'warning' => $this->notifyWarning($message),
             'error' => $this->notifyError($message),
@@ -231,22 +237,23 @@ class extends Component {
             $orderService = app(OrderService::class);
 
             $order = $orderService->createOrder(
-                customer:      $this->customer,
-                cart:          $this->cart,
-                type:          $this->type ?: 'dine_in',
+                customer: $this->customer,
+                cart: $this->cart,
+                type: $this->type ?: 'dine_in',
                 paymentMethod: $this->paymentMethod,
-                notes:         $this->orderNotes,
+                notes: $this->orderNotes,
+                tableId: $this->table->id ?? null
             );
 
             $this->clearCart();
-            $this->orderNotes   = '';
-            $this->showCart     = false;
+            $this->orderNotes = '';
+            $this->showCart = false;
 
             // Cashless → redirect to Xendit payment page
             if ($this->paymentMethod === 'cashless') {
                 $this->redirect($order->payment->xendit_payment_url);
                 return;
-            }else{
+            } else {
                 // Cash → go to payment confirmation page
                 $this->redirectRoute('cash.payment', encrypt($order->id));
             }
@@ -272,6 +279,10 @@ class extends Component {
                 {{ $this->customer->name }}
                 @if($this->customer->email)
                     <span class="text-white">| {{ $this->customer->email }}</span>
+                @endif
+                | {{ str_replace('_', ' ', ucfirst($this->type)) }}
+                @if(!is_null($this->table))
+                    - {{ $this->table->name }}
                 @endif
             </h5>
             @if($this->customer->phone_number)
@@ -362,13 +373,15 @@ class extends Component {
                     @if($selectedCategoryId)
                         <span class="badge bg-primary d-inline-flex align-items-center gap-1">
                             {{ $this->categories->firstWhere('id', $selectedCategoryId)?->name }}
-                            <i class="material-icons-outlined" style="font-size: 14px; cursor: pointer;" wire:click="selectCategory(null)">close</i>
+                            <i class="material-icons-outlined" style="font-size: 14px; cursor: pointer;"
+                               wire:click="selectCategory(null)">close</i>
                         </span>
                     @endif
                     @if($search)
                         <span class="badge bg-info d-inline-flex align-items-center gap-1">
                             Pencarian: "{{ Str::limit($search, 20) }}"
-                            <i class="material-icons-outlined" style="font-size: 14px; cursor: pointer;" wire:click="$set('search', '')">close</i>
+                            <i class="material-icons-outlined" style="font-size: 14px; cursor: pointer;"
+                               wire:click="$set('search', '')">close</i>
                         </span>
                     @endif
                 </div>
@@ -409,15 +422,18 @@ class extends Component {
                                         @endif
                                     </div>
                                     <div class="flex-grow-1 min-w-0">
-                                        <h6 class="mb-1 text-truncate" style="font-size: 0.9rem;">{{ $item['name'] }}</h6>
-                                        <p class="mb-1 text-primary fw-bold" style="font-size: 0.85rem;">@currency($item['price'])</p>
+                                        <h6 class="mb-1 text-truncate"
+                                            style="font-size: 0.9rem;">{{ $item['name'] }}</h6>
+                                        <p class="mb-1 text-primary fw-bold"
+                                           style="font-size: 0.85rem;">@currency($item['price'])</p>
                                         <div class="d-flex align-items-center gap-2">
                                             <div class="btn-group btn-group-sm" role="group">
                                                 <button
                                                     wire:click="decrementQuantity('{{ $key }}')"
                                                     class="btn btn-outline-secondary"
                                                     type="button">
-                                                    <i class="material-icons-outlined" style="font-size: 14px;">remove</i>
+                                                    <i class="material-icons-outlined"
+                                                       style="font-size: 14px;">remove</i>
                                                 </button>
                                                 <button class="btn btn-outline-secondary" disabled type="button">
                                                     <span class="fw-bold px-1">{{ $item['quantity'] }}</span>
@@ -484,7 +500,8 @@ class extends Component {
                                 </div>
                                 @if($paymentMethod === 'cashless')
                                     <p class="text-white mt-1 mb-0" style="font-size: 0.78rem;">
-                                        <i class="material-icons-outlined align-middle" style="font-size: 13px;">info</i>
+                                        <i class="material-icons-outlined align-middle"
+                                           style="font-size: 13px;">info</i>
                                         Anda akan diarahkan ke halaman pembayaran Xendit
                                     </p>
                                 @endif
@@ -571,14 +588,17 @@ class extends Component {
                             </div>
                             <div class="col-7 col-sm-12">
                                 <div class="card-body d-flex flex-column h-100 p-2 p-sm-3">
-                                    <h6 class="card-title mb-1 mb-sm-2" style="font-size: 0.9rem;">{{ $product->name }}</h6>
+                                    <h6 class="card-title mb-1 mb-sm-2"
+                                        style="font-size: 0.9rem;">{{ $product->name }}</h6>
                                     @if($product->description)
-                                        <p class="card-text small text-white mb-1 mb-sm-2 d-sm-block" style="font-size: 0.8rem;">
+                                        <p class="card-text small text-white mb-1 mb-sm-2 d-sm-block"
+                                           style="font-size: 0.8rem;">
                                             {{ Str::limit($product->description, 60) }}
                                         </p>
                                     @endif
                                     <div class="mt-auto">
-                                        <h6 class="text-primary mb-1 mb-sm-2" style="font-size: 0.9rem;">@currency($product->price)</h6>
+                                        <h6 class="text-primary mb-1 mb-sm-2"
+                                            style="font-size: 0.9rem;">@currency($product->price)</h6>
                                         <button
                                             wire:click="addToCart({{ $product->id }})"
                                             class="btn btn-sm btn-primary w-100"

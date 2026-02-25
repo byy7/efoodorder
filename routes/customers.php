@@ -9,7 +9,7 @@ Route::livewire('/', 'pages::customer-panels.main')
 Route::livewire('customer-registrations/{type}', 'pages::customer-panels.registration')
     ->name('registrations');
 
-Route::livewire('customer-orders/{type}/{customerId}', 'pages::customer-panels.order')
+Route::livewire('customer-orders/{type}/{customerId}/{tableId?}', 'pages::customer-panels.order')
     ->name('customer_orders');
 
 Route::livewire('cash/{orderId}', 'pages::customer-panels.cash')
