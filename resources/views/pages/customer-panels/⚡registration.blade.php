@@ -39,8 +39,6 @@ class extends Component {
             } else {
                 $this->redirectRoute('customer_orders', [$this->type, encrypt($customer->id)]);
             }
-
-
         } catch (Exception $e) {
             $this->dispatch('alert-notification', type: 'error', message: $e->getMessage());
         }
