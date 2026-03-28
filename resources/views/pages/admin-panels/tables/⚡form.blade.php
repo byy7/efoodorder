@@ -28,8 +28,12 @@ new class extends Component {
 
     public function delete(): void
     {
-        $this->form->delete();
-        $this->closeModal('success', 'Data berhasil dihapus!');
+        if (!$this->form->status) {
+            $this->closeModal('error', "Meja masih digunakan & tidak dapat dihapus!");
+        }else{
+            $this->form->delete();
+            $this->closeModal('success', 'Data berhasil dihapus!');
+        }
     }
 
     private function closeModal(string $type, string $message): void

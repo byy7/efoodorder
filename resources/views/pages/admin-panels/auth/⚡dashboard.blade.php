@@ -138,8 +138,10 @@ new class extends Component {
             <div class="col-12 d-flex">
                 <div class="card rounded-4 w-100">
                     <div class="card-body">
+                        @hasanyrole('Admin|Kasir')
                         <a class="mb-3 btn btn-outline-info" href="{{ route('orders') }}" wire:navigate>Lihat Semua
                             Pesanan</a>
+                        @endhasanyrole
                         <div class="table-responsive">
                             <table class="table align-middle mb-0 table-striped">
                                 <thead>

@@ -24,6 +24,8 @@ class UserForm extends Form
 
     public string $password_confirmation = '';
 
+    public ?string $role = '';
+
     public function setData($mode, $id): void
     {
         $this->mode = $mode;
@@ -36,11 +38,12 @@ class UserForm extends Form
             $this->user = User::find(decrypt($id));
             $this->name = $this->user->name;
             $this->email = $this->user->email;
+            $this->role = $this->user->getRoleNames()->first() ?? null;
         } elseif ($mode === 'delete' && $id) {
             $this->user = User::find(decrypt($id));
         } else {
             $this->user = new User;
-            $this->reset(['name', 'email', 'password', 'password_confirmation']);
+            $this->reset(['name', 'email', 'password', 'password_confirmation', 'role']);
         }
     }
 
@@ -63,7 +66,9 @@ class UserForm extends Form
 
         $validated['password'] = bcrypt($validated['password']);
 
-        $this->user->create($validated);
+        $user = $this->user->create($validated);
+
+        $user->assignRole($this->role);
     }
 
     public function update(): void
@@ -74,6 +79,8 @@ class UserForm extends Form
         ]);
 
         $this->user->update($validated);
+
+        $this->user->assignRole($this->role);
     }
 
     public function delete(): void

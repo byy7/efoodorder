@@ -109,6 +109,7 @@ new class extends Component {
                     <tr>
                         <th>No</th>
                         <th>Nama</th>
+                        <th>Role</th>
                         <th>Email</th>
                         <th>Dibuat Pada</th>
                         <th>Aksi</th>
@@ -119,6 +120,7 @@ new class extends Component {
                         <tr>
                             <td>{{ ($this->users->currentPage() - 1) * $this->users->perPage() + $key + 1}}</td>
                             <td>{{ $value->name }}</td>
+                            <td>{{ $value->getRoleNames()->first() ?? "-" }}</td>
                             <td>{{ $value->email }}</td>
                             <td>{{ $value->created_at->format('d/m/Y | H:i') }}</td>
                             <td>

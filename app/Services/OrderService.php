@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
-    public function __construct(private XenditService $xendit)
-    {
-    }
+    public function __construct(private XenditService $xendit) {}
 
     /**
      * Create an order + payment record in one transaction.
@@ -19,17 +17,16 @@ class OrderService
      */
     public function createOrder(
         Customer $customer,
-        array    $cart,
-        string   $type,           // 'dine_in' | 'takeaway'
-        string   $paymentMethod,  // 'cash' | 'cashless'
-        string   $notes = '',
-        ?int     $tableId = null,
-    ): Order
-    {
+        array $cart,
+        string $type,           // 'dine_in' | 'takeaway'
+        string $paymentMethod,  // 'cash' | 'cashless'
+        string $notes = '',
+        ?int $tableId = null,
+    ): Order {
         return DB::transaction(function () use (
             $customer, $cart, $type, $paymentMethod, $notes, $tableId
         ) {
-            $amount = collect($cart)->sum(fn($i) => $i['price'] * $i['quantity']);
+            $amount = collect($cart)->sum(fn ($i) => $i['price'] * $i['quantity']);
 
             // 1. Create order
             $order = Order::create([
@@ -68,7 +65,7 @@ class OrderService
 
                 $invoice = $this->xendit->createInvoice([
                     'external_id' => $externalId,
-                    'amount' => (int)$amount,
+                    'amount' => (int) $amount,
                     'description' => "Order {$order->order_number} - {$customer->name}",
                     'payer_email' => $customer->email ?? 'customer@example.com',
                     'customer' => [

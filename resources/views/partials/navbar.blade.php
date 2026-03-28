@@ -20,6 +20,7 @@
                                  height="90"
                                  alt="user">
                             <h5 class="user-name mb-0 fw-bold">{{ auth()->user()->name  }}</h5>
+                            <h6 class="user-name mb-0 fw-bold">{{ auth()->user()->getRoleNames()->first() }}</h6>
                         </div>
                     </a>
                     <hr class="dropdown-divider">

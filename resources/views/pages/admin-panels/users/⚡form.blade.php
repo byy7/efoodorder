@@ -1,8 +1,10 @@
 <?php
 
 use App\Livewire\Forms\Admin\UserForm;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Spatie\Permission\Models\Role;
 
 new class extends Component {
     public UserForm $form;
@@ -13,6 +15,12 @@ new class extends Component {
         $this->resetValidation();
         $this->form->setData($mode, $id);
         $this->dispatch('show-modal', mode: $mode);
+    }
+
+    #[Computed]
+    public function roles()
+    {
+        return Role::orderBy('name')->pluck('name');
     }
 
     public function save(): void
@@ -64,6 +72,16 @@ new class extends Component {
                         <input wire:model="form.name" type="text" class="form-control" id="name"
                                placeholder="Masukkan Nama" required>
                         @error('form.name')<span class="text-danger">{{ $message }}</span>@enderror
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
+                        <select class="form-select" wire:model="form.role">
+                            <option value="">Pilih Role</option>
+                            @foreach($this->roles as $role)
+                                <option value="{{ $role }}">{{ $role }}</option>
+                            @endforeach
+                        </select>
+                        @error('form.role')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                     <div class="col-md-12 mb-2">
                         <label for="email" class="form-label">Email <span class="text-danger">*</span></label>

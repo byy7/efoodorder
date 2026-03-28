@@ -20,6 +20,7 @@
                     <div class="menu-title">Dashboard</div>
                 </a>
             </li>
+            @hasanyrole('Admin|Kasir')
             <li {{ request()->routeIs('orders') ?? 'mm-active' }}>
                 <a href="{{ route('orders') }}" wire:navigate>
                     <div class="parent-icon"><i class="material-icons-outlined">shop</i>
@@ -27,6 +28,9 @@
                     <div class="menu-title">Pesanan</div>
                 </a>
             </li>
+            @endhasanyrole
+
+            @role('Admin')
             <li {{ request()->routeIs('customers') ?? 'mm-active' }}>
                 <a href="{{ route('customers') }}" wire:navigate>
                     <div class="parent-icon"><i class="material-icons-outlined">group</i>
@@ -48,6 +52,9 @@
                     <div class="menu-title">Produk</div>
                 </a>
             </li>
+            @endrole
+
+            @hasanyrole('Admin|Kasir')
             <li {{ request()->routeIs('tables') ?? 'mm-active' }}>
                 <a href="{{ route('tables') }}" wire:navigate>
                     <div class="parent-icon"><i class="material-icons-outlined">table_bar</i>
@@ -55,6 +62,9 @@
                     <div class="menu-title">Meja</div>
                 </a>
             </li>
+            @endhasanyrole
+
+            @role('Admin')
             <li {{ request()->routeIs('users') ?? 'mm-active' }}>
                 <a href="{{ route('users') }}" wire:navigate>
                     <div class="parent-icon"><i class="material-icons-outlined">person</i>
@@ -62,6 +72,9 @@
                     <div class="menu-title">Pengguna</div>
                 </a>
             </li>
+            @endrole
+
+            @hasanyrole('Admin|Owner')
             <li {{ request()->routeIs('reports') ?? 'mm-active' }}>
                 <a href="{{ route('reports') }}" wire:navigate>
                     <div class="parent-icon"><i class="material-icons-outlined">description</i>
@@ -69,13 +82,14 @@
                     <div class="menu-title">Laporan</div>
                 </a>
             </li>
-{{--            <li {{ request()->routeIs('dashboard') ?? 'mm-active' }}>--}}
-{{--                <a href="#" wire:navigate>--}}
-{{--                    <div class="parent-icon"><i class="material-icons-outlined">support</i>--}}
-{{--                    </div>--}}
-{{--                    <div class="menu-title">Panduan Pengguna</div>--}}
-{{--                </a>--}}
-{{--            </li>--}}
+            @endhasanyrole
+            {{--            <li {{ request()->routeIs('dashboard') ?? 'mm-active' }}>--}}
+            {{--                <a href="#" wire:navigate>--}}
+            {{--                    <div class="parent-icon"><i class="material-icons-outlined">support</i>--}}
+            {{--                    </div>--}}
+            {{--                    <div class="menu-title">Panduan Pengguna</div>--}}
+            {{--                </a>--}}
+            {{--            </li>--}}
         </ul>
     </div>
 </aside>

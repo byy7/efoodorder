@@ -26,6 +26,7 @@ class ProductForm extends Form
 
     #[Validate('required')]
     public ?string $price = null;
+
     #[Validate('required')]
     public ?string $capital_price = null;
 
@@ -60,7 +61,7 @@ class ProductForm extends Form
             $this->product = Product::find(decrypt($id));
         } else {
             $this->product = new Product;
-            $this->reset(['category_id', 'name', 'description', 'is_available', 'image', 'stock', 'price','capital_price']);
+            $this->reset(['category_id', 'name', 'description', 'is_available', 'image', 'stock', 'price', 'capital_price']);
         }
     }
 
