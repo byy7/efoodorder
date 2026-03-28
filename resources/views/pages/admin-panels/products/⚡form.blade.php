@@ -96,7 +96,16 @@ new class extends Component {
                         @error('form.name')<span class="text-danger">{{ $message }}</span>@enderror
                     </div>
                     <div class="col-md-12 mb-2">
-                        <label for="price" class="form-label">Harga <span class="text-danger">*</span></label>
+                        <label for="capital_price" class="form-label">Harga Modal <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input wire:model="form.capital_price" type="text" class="form-control number-separator" id="capital_price"
+                                   placeholder="Masukkan Harga" required>
+                        </div>
+                        @error('form.capital_price')<span class="text-danger">{{ $message }}</span>@enderror
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <label for="price" class="form-label">Harga Jual <span class="text-danger">*</span></label>
                         <div class="input-group">
                             <span class="input-group-text">Rp</span>
                             <input wire:model="form.price" type="text" class="form-control number-separator" id="price"

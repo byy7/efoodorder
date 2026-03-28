@@ -143,7 +143,8 @@ new class extends Component {
                         <th>Nama</th>
                         <th>Kategori</th>
                         <th>Gambar</th>
-                        <th>Harga</th>
+                        <th>Harga Modal</th>
+                        <th>Harga Jual</th>
                         <th>Status</th>
                         <th>Stok</th>
                         <th>Aksi</th>
@@ -167,6 +168,7 @@ new class extends Component {
                                          width="100" alt="{{ $value->name }}">
                                 @endif
                             </td>
+                            <td>@currency($value->capital_price)</td>
                             <td>@currency($value->price)</td>
                             <td><span
                                     class="badge {{ $value->is_available ? "bg-grd-success" : "bg-grd-danger" }}">{{ $value->is_available ? "Aktif" : "Tidak Aktif" }}</span>

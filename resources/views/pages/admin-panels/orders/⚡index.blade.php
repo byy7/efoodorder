@@ -4,6 +4,7 @@ use App\Concerns\WithNotifications;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\Table;
 use App\Models\User;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -17,6 +18,7 @@ new class extends Component {
     public string $search = '';
     public string $status = '';
     public string $payment_method = '';
+    public string $type = '';
 
     #[On('alert-notification')]
     public function alert(string $type, string $message): void
@@ -59,6 +61,10 @@ new class extends Component {
             $query->where('payment_method', $this->payment_method);
         }
 
+        if ($this->type !== "") {
+            $query->where('type', $this->type);
+        }
+
         return $query->latest()->paginate(10);
     }
 
@@ -66,6 +72,15 @@ new class extends Component {
     {
         $id = encrypt($id);
         $this->dispatch('open-modal', mode: 'edit', id: $id);
+    }
+
+    public function updateTable($id)
+    {
+        $table = Table::find($id);
+
+        $table->update(['status' => true]);
+
+        return $this->redirectRoute('orders');
     }
 };
 ?>
@@ -76,7 +91,7 @@ new class extends Component {
     {{-- END BREADCRUMB --}}
 
     <div class="row g-3 align-items-end">
-        <div class="col-12 col-md-6 col-lg-4">
+        <div class="col-12 col-md-6 col-lg-3">
             <label for="search-input" class="form-label mb-2">Cari Pesanan</label>
             <div class="position-relative">
                 <input
@@ -105,15 +120,27 @@ new class extends Component {
             </select>
         </div>
 
-        <div wire:ignore class="col-12 col-md-6 col-lg-2">
+        <div wire:ignore class="col-12 col-md-6 col-lg-3">
             <label for="select-active" class="form-label mb-2">Pembayaran</label>
             <select
                 id="paymentMethod"
                 class="form-select"
-                aria-label="Filter berdasarkan status" data-placeholder="Pilih Status">
+                aria-label="Filter berdasarkan status" data-placeholder="Pilih Pembayaran">
                 <option value=""></option>
                 <option value="cash">Tunai</option>
                 <option value="cashless">Non Tunai</option>
+            </select>
+        </div>
+
+        <div wire:ignore class="col-12 col-md-6 col-lg-3">
+            <label for="select-active" class="form-label mb-2">Tipe</label>
+            <select
+                id="paymentType"
+                class="form-select"
+                aria-label="Filter berdasarkan tipe" data-placeholder="Pilih Tipe">
+                <option value=""></option>
+                <option value="dine_in">Dine In</option>
+                <option value="takeaway">Take Away</option>
             </select>
         </div>
 
@@ -160,7 +187,12 @@ new class extends Component {
                                 </div>
                             </td>
                             <td>
-                                <span class="fw-semibold" wire:click="show({{ $value->id }})" style="cursor: pointer">{{ $value->order_number }}</span>
+                                <span class="fw-semibold" wire:click="show({{ $value->id }})"
+                                      style="cursor: pointer">{{ $value->order_number }}</span>
+                                @if(!is_null($value->table_id))
+                                    <br>
+                                    <span class="fw-light">{{ $value->table->name }}</span>
+                                @endif
                             </td>
                             <td>{{ $value->customer?->name ?? '-' }}</td>
                             <td>
@@ -178,9 +210,19 @@ new class extends Component {
                                         'cancelled' => ['badge bg-danger',   'text-danger',   'Dibatalkan'],
                                     ];
                                     [$bg, $text, $label] = $statusMap[$value->status] ?? ['bg-secondary', 'text-secondary', $value->status];
+
+                                    $typeMap = [
+                                        'dine_in' => ['badge bg-primary', 'text-primary', 'Dine In'],
+                                        'takeaway' => ['badge bg-secondary', 'text-secondary', 'Take Away'],
+                                        ];
+                                     [$bgType, $textType, $labelType] = $typeMap[$value->type] ?? ['bg-secondary', 'text-secondary', $value->type];
                                 @endphp
                                 <div class="card-lable {{ $bg }} {{ $text }} bg-opacity-10">
                                     <p class="{{ $text }} mb-0">{{ $label }}</p>
+                                </div>
+                                <br>
+                                <div class="card-lable {{ $bgType }} {{ $textType }} bg-opacity-10">
+                                    <p class="{{ $textType }} mb-0">{{ $labelType }}</p>
                                 </div>
                             </td>
                             <td>
@@ -196,11 +238,34 @@ new class extends Component {
                                             <i class="bi bi-three-dots"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item text-success" target="_blank" href="{{ route('customer.payment.cash', encrypt($value->id)) }}"><i
+                                            <li><a class="dropdown-item text-success" target="_blank"
+                                                   href="{{ route('customer.payment.cash', encrypt($value->id)) }}"><i
                                                         class="bi bi-cash me-2"></i>Bayar</a></li>
                                         </ul>
                                     </div>
                                 </td>
+                            @elseif(!is_null($value->table_id))
+                                @if(!$value->table->status)
+                                    <td>
+                                        <div class="dropdown">
+                                            <button
+                                                class="btn btn-sm btn-filter dropdown-toggle dropdown-toggle-nocaret"
+                                                type="button"
+                                                data-bs-toggle="dropdown"
+                                                aria-expanded="false">
+                                                <i class="bi bi-three-dots"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li><a class="dropdown-item text-warning" href="javascript:0;"
+                                                       wire:confirm="Meja akan tersedia, update status meja?"
+                                                       wire:click="updateTable({{$value->table_id}})"><i
+                                                            class="bi bi-pencil me-2"></i>Meja Selesai</a></li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                @else
+                                    <td><i class="bi bi-ban text-danger"></i></td>
+                                @endif
                             @else
                                 <td><i class="bi bi-ban text-danger"></i></td>
                             @endif
@@ -246,6 +311,18 @@ new class extends Component {
         $('#paymentMethod').on('change', function () {
             var data = $('#paymentMethod').select2("val");
             $wire.$set('payment_method', data);
+        });
+
+        $('#paymentType').select2({
+            theme: "bootstrap-5",
+            width: '100%',
+            placeholder: $(this).data('placeholder'),
+            allowClear: true
+        });
+
+        $('#paymentType').on('change', function () {
+            var data = $('#paymentType').select2("val");
+            $wire.$set('type', data);
         });
     });
 </script>

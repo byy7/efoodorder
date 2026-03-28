@@ -169,7 +169,6 @@ new class extends Component {
                     <label class="form-label small">Status Bayar</label>
                     <select wire:model.live="paymentStatus" class="form-select">
                         <option value="">Semua</option>
-                        <option value="pending">Belum Dibayar</option>
                         <option value="completed">Lunas</option>
                         <option value="cancelled">Dibatalkan</option>
                     </select>

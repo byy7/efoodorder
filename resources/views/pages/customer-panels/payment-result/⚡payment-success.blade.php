@@ -13,6 +13,11 @@ class extends Component {
         $this->order = Order::with(['items.product', 'payment'])
             ->findOrFail(decrypt($orderId));
     }
+
+    public function reorder()
+    {
+        $this->redirectRoute('customer_orders', ["dine_in", encrypt($this->order->customer->id), $this->order->table_id]);
+    }
 };
 ?>
 
@@ -59,6 +64,21 @@ class extends Component {
                     &nbsp;|&nbsp; Kembalian: <strong>@currency($order->payment->cash_received - $order->amount)</strong>
                 </p>
             @endif
+
+            @if(!is_null($order->table_id))
+                @if($order->table->status !== true)
+                    <div class="col-12">
+                        <div class="d-grid">
+                            <button class="btn btn-grd btn-lg btn-grd-primary" type="button" wire:click="reorder">Tambah Pesanan</button>
+                        <span wire:loading wire:target="reorder">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                    Loading...
+                                </span>
+                        </div>
+                    </div>
+                @endif
+            @endif
+
 
             <p class="text-white small">
                 Silahkan tutup halaman ini.

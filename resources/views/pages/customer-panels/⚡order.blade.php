@@ -234,6 +234,10 @@ class extends Component {
         }
 
         try {
+            if(!is_null($this->table)){
+                $this->table->update(['status' => false]);
+            }
+
             $orderService = app(OrderService::class);
 
             $order = $orderService->createOrder(

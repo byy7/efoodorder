@@ -13,6 +13,11 @@ class extends Component {
         $this->order = Order::with(['items.product', 'payment'])
             ->findOrFail(decrypt($orderId));
     }
+
+    public function reorder()
+    {
+        $this->redirectRoute('customer_orders', ["dine_in", encrypt($this->order->customer->id), $this->order->table_id]);
+    }
 };
 ?>
 
@@ -49,6 +54,21 @@ class extends Component {
             </div>
 
             <h6 class="text-white fw-bold">Silahkan ke kasir untuk melakukan pembayaran tunai.</h6>
+
+            @if(!is_null($order->table_id))
+                @if($order->table->status !== true)
+                    <div class="col-12">
+                        <div class="d-grid">
+                            <button class="btn btn-grd btn-lg btn-grd-primary" type="button" wire:click="reorder">Tambah Pesanan</button>
+                            <span wire:loading wire:target="reorder">
+                                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                    Loading...
+                                </span>
+                        </div>
+                    </div>
+                @endif
+            @endif
+
             <p class="text-white small">
                 Anda dapat menutup halaman ini jika sudah selesai melakukan pembayaran.
             </p>

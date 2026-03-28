@@ -169,7 +169,7 @@
     </div>
     <div class="summary-card card-revenue">
         <div class="s-label">Total Pendapatan</div>
-        <div class="s-value">Rp {{ number_format($summary['revenue'], 0, ',', '.') }}</div>
+        <div class="s-value">Rp.{{ number_format($summary['revenue'], 2, ',', '.') }}</div>
     </div>
 </div>
 

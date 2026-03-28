@@ -26,6 +26,8 @@ class ProductForm extends Form
 
     #[Validate('required')]
     public ?string $price = null;
+    #[Validate('required')]
+    public ?string $capital_price = null;
 
     #[Validate('nullable|image|max:2048')]
     public $image = null;
@@ -53,11 +55,12 @@ class ProductForm extends Form
             $this->is_available = $this->product->is_available;
             $this->stock = $this->product->stock;
             $this->price = intval($this->product->price);
+            $this->capital_price = intval($this->product->capital_price);
         } elseif ($mode === 'delete' && $id) {
             $this->product = Product::find(decrypt($id));
         } else {
             $this->product = new Product;
-            $this->reset(['category_id', 'name', 'description', 'is_available', 'image', 'stock', 'price']);
+            $this->reset(['category_id', 'name', 'description', 'is_available', 'image', 'stock', 'price','capital_price']);
         }
     }
 
@@ -75,6 +78,7 @@ class ProductForm extends Form
         $validated = $this->validate();
         $validated['category_id'] = decrypt($this->category_id);
         $validated['price'] = floatval(str_replace(',', '', $validated['price']));
+        $validated['capital_price'] = floatval(str_replace(',', '', $validated['capital_price']));
 
         if (! is_null($this->image)) {
             $validated['image'] = $this->storeImage();
@@ -88,6 +92,7 @@ class ProductForm extends Form
         $validated = $this->validate();
         $validated['category_id'] = decrypt($this->category_id);
         $validated['price'] = floatval(str_replace(',', '', $validated['price']));
+        $validated['capital_price'] = floatval(str_replace(',', '', $validated['capital_price']));
 
         if (! is_null($validated['image'])) {
             if (! is_null($this->product->image)) {
