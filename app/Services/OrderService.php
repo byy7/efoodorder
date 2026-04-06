@@ -27,6 +27,7 @@ class OrderService
             $customer, $cart, $type, $paymentMethod, $notes, $tableId
         ) {
             $amount = collect($cart)->sum(fn ($i) => $i['price'] * $i['quantity']);
+            $revenue = collect($cart)->sum(fn ($i) => ($i['price'] - $i['capital_price']) * $i['quantity']);
 
             // 1. Create order
             $order = Order::create([
@@ -39,6 +40,7 @@ class OrderService
                 'status' => 'pending',
                 'payment_status' => 'pending',
                 'payment_method' => $paymentMethod,
+                'revenue' => $revenue,
             ]);
 
             // 2. Create order items

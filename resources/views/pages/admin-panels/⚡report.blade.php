@@ -55,6 +55,7 @@ new class extends Component {
             'confirmed' => (clone $q)->whereIn('status', ['confirmed', 'completed'])->count(),
             'cancelled' => (clone $q)->where('status', 'cancelled')->count(),
             'revenue' => (clone $q)->where('payment_status', 'completed')->sum('amount'),
+            'net_profit' => (clone $q)->where('payment_status', 'completed')->sum('revenue')
         ];
     }
 
@@ -212,13 +213,21 @@ new class extends Component {
                                 <span class="material-icons-outlined" style="font-size:18px;">{{ $card['icon'] }}</span>
                             </div>
                         </div>
-                        <h4 class="mb-0 fw-bold">
-                            @if($card['currency'])
+
+                        @if($card['currency'])
+                            <h4 class="mb-0 fw-bold">
                                 @currency($card['value'])
-                            @else
-                                {{ $card['value'] }}
+                                <br>
+                            </h4>
+                            @if($this->summary['net_profit'] > 0)
+                                <span
+                                    class="text-muted text-sm">Laba Bersih : @currency($this->summary['net_profit'])</span>
                             @endif
-                        </h4>
+                        @else
+                            <h4 class="mb-0 fw-bold">
+                                {{ $card['value'] }}
+                            </h4>
+                        @endif
                     </div>
                 </div>
             </div>

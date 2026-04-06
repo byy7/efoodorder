@@ -153,6 +153,7 @@ class extends Component {
                 'product_id' => $product->id,
                 'name' => $product->name,
                 'price' => $product->price,
+                'capital_price' => $product->capital_price,
                 'image' => $product->image,
                 'quantity' => 1,
                 'notes' => '',

@@ -163,6 +163,10 @@
         <div class="s-label">Total Pendapatan</div>
         <div class="s-value">Rp.{{ number_format($summary['revenue'], 2, ',', '.') }}</div>
     </div>
+    <div class="summary-card card-revenue">
+        <div class="s-label">Total Laba Bersih</div>
+        <div class="s-value">Rp.{{ number_format($summary['net_profit'], 2, ',', '.') }}</div>
+    </div>
 </div>
 
 {{-- Orders table --}}
