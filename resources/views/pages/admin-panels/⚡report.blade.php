@@ -67,9 +67,6 @@ new class extends Component {
             new OrderReportExport(
                 dateStart: $this->dateStart,
                 dateEnd: $this->dateEnd,
-                status: $this->status ?: null,
-                paymentMethod: $this->paymentMethod ?: null,
-                paymentStatus: $this->paymentStatus ?: null,
             ),
             $filename
         );
@@ -97,12 +94,20 @@ new class extends Component {
             'cancelled' => 'Dibatalkan',
         ];
 
+        $query = Order::with(['customer', 'payment'])
+            ->whereBetween('created_at', [
+                Carbon::parse($this->dateStart)->startOfDay(),
+                Carbon::parse($this->dateEnd)->endOfDay(),
+            ])
+            ->where('payment_status', 'completed')
+            ->latest();
+
         $pdf = Pdf::loadView('pages.admin-panels.report-pdf', [
-            'orders' => $this->baseQuery()->get(),
+            'orders' => $query->get(),
             'dateStart' => $this->dateStart,
             'dateEnd' => $this->dateEnd,
-            'statusLabel' => $statusLabels[$this->status] ?? 'Semua',
-            'paymentMethodLabel' => $methodLabels[$this->paymentMethod] ?? 'Semua',
+            'statusLabel' => 'Selesai',
+            'paymentMethodLabel' => 'Selesai',
             'summary' => $this->summary,
         ])->setPaper('a4', 'landscape');
 

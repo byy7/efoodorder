@@ -155,17 +155,9 @@
 
 {{-- Summary cards --}}
 <div class="summary-row">
-    <div class="summary-card card-pending">
-        <div class="s-label">Diproses</div>
-        <div class="s-value">{{ $summary['pending'] }}</div>
-    </div>
     <div class="summary-card card-confirmed">
         <div class="s-label">Selesai</div>
         <div class="s-value">{{ $summary['confirmed'] }}</div>
-    </div>
-    <div class="summary-card card-cancelled">
-        <div class="s-label">Dibatalkan</div>
-        <div class="s-value">{{ $summary['cancelled'] }}</div>
     </div>
     <div class="summary-card card-revenue">
         <div class="s-label">Total Pendapatan</div>

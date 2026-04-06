@@ -26,9 +26,6 @@ class OrderReportExport implements FromQuery, ShouldAutoSize, WithColumnFormatti
     public function __construct(
         private string $dateStart,
         private string $dateEnd,
-        private ?string $status,
-        private ?string $paymentMethod,
-        private ?string $paymentStatus,
     ) {}
 
     public function query()
@@ -38,9 +35,7 @@ class OrderReportExport implements FromQuery, ShouldAutoSize, WithColumnFormatti
                 Carbon::parse($this->dateStart)->startOfDay(),
                 Carbon::parse($this->dateEnd)->endOfDay(),
             ])
-            ->when($this->status, fn ($q) => $q->where('status', $this->status))
-            ->when($this->paymentMethod, fn ($q) => $q->where('payment_method', $this->paymentMethod))
-            ->when($this->paymentStatus, fn ($q) => $q->where('payment_status', $this->paymentStatus))
+            ->where('payment_status', 'completed')
             ->latest();
     }
 
