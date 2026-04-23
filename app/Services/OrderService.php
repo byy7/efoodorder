@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
@@ -53,6 +54,12 @@ class OrderService
                 ]);
             }
 
+            // 2b. Decrement stock
+            foreach ($cart as $item) {
+                Product::where('id', $item['product_id'])
+                    ->decrement('stock', $item['quantity']);
+            }
+
             // 3. Create payment record
             $payment = $order->payment()->create([
                 'payment_method' => $paymentMethod,
@@ -91,6 +98,12 @@ class OrderService
         });
     }
 
+    public function handleXenditSuccess(Order $order): void
+    {
+        // ✅ Decrement stock only after Xendit confirms payment
+        $this->decrementStock($order->fresh());
+    }
+
     /**
      * Mark a cash order as paid immediately.
      */
@@ -110,6 +123,23 @@ class OrderService
                 'payment_status' => 'completed',
                 'status' => 'confirmed',
             ]);
+
+            $this->decrementStock($order->fresh());
         });
+    }
+
+    private function decrementStock(Order $order): void
+    {
+        // Guard: only decrement once
+        if ($order->stock_decremented) {
+            return;
+        }
+
+        foreach ($order->items as $item) {
+            Product::where('id', $item->product_id)
+                ->decrement('stock', $item->quantity);
+        }
+
+        $order->update(['stock_decremented' => true]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\OrderService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -41,5 +42,7 @@ class Payment extends Model
             'payment_status' => 'completed',
             'status' => 'confirmed',
         ]);
+
+        app(OrderService::class)->handleXenditSuccess($this->order);
     }
 }

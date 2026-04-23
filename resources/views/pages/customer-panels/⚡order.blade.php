@@ -70,7 +70,8 @@ class extends Component {
     {
         return Category::where('is_active', true)
             ->withCount(['products' => function ($q) {
-                $q->where('is_available', true);
+                $q->where('is_available', true)
+                    ->where('stock', '>', 0);
             }])
             ->having('products_count', '>', 0)
             ->orderBy('name')
@@ -81,7 +82,8 @@ class extends Component {
     public function products()
     {
         $query = Product::with('category')
-            ->where('is_available', true);
+            ->where('is_available', true)
+            ->where('stock', '>', 0);
 
         // Category Filter
         if ($this->selectedCategoryId) {
@@ -145,6 +147,12 @@ class extends Component {
         }
 
         $cartKey = "product_{$productId}";
+        $currentQty = isset($this->cart[$cartKey]) ? $this->cart[$cartKey]['quantity'] : 0;
+
+        if ($currentQty >= $product->stock) {
+            $this->notifyError("Stok '{$product->name}' hanya tersisa {$product->stock}");
+            return;
+        }
 
         if (isset($this->cart[$cartKey])) {
             $this->cart[$cartKey]['quantity']++;
@@ -180,6 +188,17 @@ class extends Component {
         }
 
         if (isset($this->cart[$cartKey])) {
+            $product = Product::find($this->cart[$cartKey]['product_id']);
+
+            if ($product && $quantity > $product->stock) {
+                $this->notifyError("Stok '{$product->name}' hanya tersisa {$product->stock}");
+                $this->cart[$cartKey]['quantity'] = $product->stock;
+                $this->saveCart();
+                // Tell the browser what the real value should be
+                $this->dispatch('quantity-corrected', cartKey: $cartKey, quantity: $product->stock);
+                return;
+            }
+
             $this->cart[$cartKey]['quantity'] = $quantity;
             $this->saveCart();
         }
@@ -188,8 +207,17 @@ class extends Component {
     public function incrementQuantity(string $cartKey): void
     {
         if (isset($this->cart[$cartKey])) {
+            $product = Product::find($this->cart[$cartKey]['product_id']);
+            $newQty = $this->cart[$cartKey]['quantity'] + 1;
+
+            if ($product && $newQty > $product->stock) {
+                $this->notifyError("Stok '{$product->name}' hanya tersisa {$product->stock}");
+                return;
+            }
+
             $this->cart[$cartKey]['quantity']++;
             $this->saveCart();
+            $this->dispatch('quantity-corrected', cartKey: $cartKey, quantity: $this->cart[$cartKey]['quantity']);
         }
     }
 
@@ -199,6 +227,7 @@ class extends Component {
             if ($this->cart[$cartKey]['quantity'] > 1) {
                 $this->cart[$cartKey]['quantity']--;
                 $this->saveCart();
+                $this->dispatch('quantity-corrected', cartKey: $cartKey, quantity: $this->cart[$cartKey]['quantity']);
             } else {
                 $this->removeFromCart($cartKey);
             }
@@ -235,7 +264,7 @@ class extends Component {
         }
 
         try {
-            if(!is_null($this->table)){
+            if (!is_null($this->table)) {
                 $this->table->update(['status' => false]);
             }
 
@@ -431,25 +460,29 @@ class extends Component {
                                             style="font-size: 0.9rem;">{{ $item['name'] }}</h6>
                                         <p class="mb-1 text-primary fw-bold"
                                            style="font-size: 0.85rem;">@currency($item['price'])</p>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="btn-group btn-group-sm" role="group">
-                                                <button
-                                                    wire:click="decrementQuantity('{{ $key }}')"
-                                                    class="btn btn-outline-secondary"
-                                                    type="button">
-                                                    <i class="material-icons-outlined"
-                                                       style="font-size: 14px;">remove</i>
-                                                </button>
-                                                <button class="btn btn-outline-secondary" disabled type="button">
-                                                    <span class="fw-bold px-1">{{ $item['quantity'] }}</span>
-                                                </button>
-                                                <button
-                                                    wire:click="incrementQuantity('{{ $key }}')"
-                                                    class="btn btn-outline-secondary"
-                                                    type="button">
-                                                    <i class="material-icons-outlined" style="font-size: 14px;">add</i>
-                                                </button>
-                                            </div>
+                                        <div class="d-flex align-items-center gap-1">
+                                            <button
+                                                wire:click="decrementQuantity('{{ $key }}')"
+                                                class="btn btn-outline-secondary btn-sm"
+                                                style="width:28px;height:28px;padding:0;line-height:1;"
+                                                type="button">
+                                                <i class="material-icons-outlined" style="font-size: 14px;">remove</i>
+                                            </button>
+                                            <input
+                                                type="number"
+                                                min="1"
+                                                value="{{ $item['quantity'] }}"
+                                                wire:change="updateQuantity('{{ $key }}', $event.target.value)"
+                                                data-cart-key="{{ $key }}"
+                                                class="form-control form-control-sm text-center fw-bold qty-input"
+                                                style="width:52px;height:28px;padding:0 4px;font-size:0.85rem;">
+                                            <button
+                                                wire:click="incrementQuantity('{{ $key }}')"
+                                                class="btn btn-outline-secondary btn-sm"
+                                                style="width:28px;height:28px;padding:0;line-height:1;"
+                                                type="button">
+                                                <i class="material-icons-outlined" style="font-size: 14px;">add</i>
+                                            </button>
                                             <button
                                                 wire:click="removeFromCart('{{ $key }}')"
                                                 class="btn btn-sm btn-outline-danger ms-auto"
@@ -604,11 +637,14 @@ class extends Component {
                                     <div class="mt-auto">
                                         <h6 class="text-primary mb-1 mb-sm-2"
                                             style="font-size: 0.9rem;">@currency($product->price)</h6>
+                                        <h6 class="text-primary mb-1 mb-sm-2"
+                                            style="font-size: 0.9rem;">Stok: {{ $product->stock }}</h6>
                                         <button
                                             wire:click="addToCart({{ $product->id }})"
                                             class="btn btn-sm btn-primary w-100"
                                             type="button">
-                                            <i class="material-icons-outlined d-sm-inline" style="font-size: 16px;">add_shopping_cart</i>
+                                            <i class="material-icons-outlined d-sm-inline" style="
+                                            height: 6px;font-size: 16px;">add_shopping_cart</i>
                                             <span class="d-sm-inline">Tambah</span>
                                         </button>
                                     </div>
@@ -776,3 +812,12 @@ class extends Component {
         }
     </style>
 @endpush
+
+<script>
+    Livewire.on('quantity-corrected', ({cartKey, quantity}) => {
+        const input = document.querySelector(`.qty-input[data-cart-key="${cartKey}"]`);
+        if (input) {
+            input.value = quantity;
+        }
+    });
+</script>
